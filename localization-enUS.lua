@@ -18,7 +18,6 @@ ACP:UpdateLocale( {
 	["No information available."] = true,
 	["Loaded"] = true,
 	["Recursive"] = true,
-	["LoD Children"] = true,
 	["Loadable OnDemand"] = true,
 	["Disabled on reloadUI"] = true,
 	["Default"] = true;
@@ -29,26 +28,34 @@ ACP:UpdateLocale( {
 	["Remove from current selection"] = true;
 	["Rename"] = true;
 	["Use SHIFT to override the current enabling of dependancies behaviour."] = true,
-	["Press CTRL to override the enabling of LoD children."] = true,
     ["Click to enable protect mode. Protected addons will not be disabled"] = true,
     ["when performing a reloadui."]=true,
     ["ACP: Some protected addons aren't loaded. Reload now?"]=true,
 	["Active Embeds"] = true,
 	["Memory Usage"] = true,
 	
+	["Blizzard_AchievementUI"] = "Blizzard: Achievement",
 	["Blizzard_AuctionUI"] = "Blizzard: Auction",
+	["Blizzard_BarbershopUI"] = "Blizzard: Barbershop",
 	["Blizzard_BattlefieldMinimap"] = "Blizzard: Battlefield Minimap",
 	["Blizzard_BindingUI"] = "Blizzard: Binding",
+	["Blizzard_Calendar"] = "Blizzard: Calendar",
+	["Blizzard_CombatLog"] = "Blizzard: Combat Log",
 	["Blizzard_CombatText"] = "Blizzard: Combat Text",
-	["Blizzard_CraftUI"] = "Blizzard: Craft",
+	["Blizzard_FeedbackUI"] = "Blizzard: Feedback",
+	["Blizzard_GlyphUI"] = "Blizzard: Glyph",
 	["Blizzard_GMSurveyUI"] = "Blizzard: GM Survey",
+	["Blizzard_GuildBankUI"] = "Blizzard: GuildBank",
 	["Blizzard_InspectUI"] = "Blizzard: Inspect",
 	["Blizzard_ItemSocketingUI"] = "Blizzard: Item Socketing",
 	["Blizzard_MacroUI"] = "Blizzard: Macro",
 	["Blizzard_RaidUI"] = "Blizzard: Raid",
 	["Blizzard_TalentUI"] = "Blizzard: Talent",
+	["Blizzard_TimeManager"] = "Blizzard: TimeManager",
+	["Blizzard_TokenUI"] = "Blizzard: Token",
 	["Blizzard_TradeSkillUI"] = "Blizzard: Trade Skill",
 	["Blizzard_TrainerUI"] = "Blizzard: Trainer",
+	["Blizzard_VehicleUI"] = "Blizzard: Vehicle",
 	
 	["*** Enabling <%s> %s your UI ***"] = true;
 	["*** Unknown Addon <%s> Required ***"] = true;
