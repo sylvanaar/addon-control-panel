@@ -55,7 +55,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-						ACP:Collapse_OnClick(this:GetParent())
+						ACP:Collapse_OnClick(self:GetParent())
 					</OnClick>
         </Scripts>
         <NormalTexture name="$parentIcon"/>
@@ -75,7 +75,7 @@
         </Anchors>
          <Scripts>
                   <OnClick>
-						ACP:Security_OnClick(this:GetParent().addon)
+						ACP:Security_OnClick(self:GetParent().addon)
 					</OnClick>
           <OnEnter>
 				ACP:ShowSecurityTooltip()
@@ -101,7 +101,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-						ACP:AddonList_LoadNow(this:GetParent().addon);
+						ACP:AddonList_LoadNow(self:GetParent().addon);
 					</OnClick>
         </Scripts>
       </Button>
@@ -118,14 +118,14 @@
         </Anchors>
         <Scripts>
           <OnEnter>
-				ACP:ShowHintTooltip(this.addon)
+				ACP:ShowHintTooltip(self.addon)
 			</OnEnter>
           <OnLeave>
 				GameTooltip:Hide()
 			</OnLeave>
           <OnClick>
-						ACP:AddonList_Enable(this:GetParent().addon, this:GetChecked(), 
-						IsShiftKeyDown(), IsControlKeyDown(), this:GetParent().category);
+						ACP:AddonList_Enable(self:GetParent().addon, self:GetChecked(), 
+						IsShiftKeyDown(), IsControlKeyDown(), self:GetParent().category);
 					</OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
@@ -137,7 +137,7 @@
     </Frames>
     <Scripts>
       <OnEnter>
-				ACP:ShowTooltip(this.addon)
+				ACP:ShowTooltip(self.addon)
 			</OnEnter>
       <OnLeave>
 				GameTooltip:Hide()
@@ -154,7 +154,7 @@
     </Anchors>
     <Scripts>
 		<!--<OnLoad>
-			GameMenuButtonLogout:SetPoint("TOP",this:GetName(),"BOTTOM",0,-1);
+			GameMenuButtonLogout:SetPoint("TOP",self:GetName(),"BOTTOM",0,-1);
 			GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()+25);
 		</OnLoad>-->
 		<OnShow>
@@ -162,7 +162,7 @@
 			if (GameMenuButtonRatings:IsShown()) then
 				self:SetPoint("TOP", GameMenuButtonRatings, "BOTTOM", 0, -1);
 			end;
-			GameMenuButtonLogout:SetPoint("TOP",this:GetName(),"BOTTOM",0,-1);
+			GameMenuButtonLogout:SetPoint("TOP",self:GetName(),"BOTTOM",0,-1);
 		</OnShow>
 		<OnHide>
 			GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()-25);
@@ -279,47 +279,13 @@
 		</OnClick>
         </Scripts>
       </Button>
-      <CheckButton name="$parent_NoChildren">
-        <Size>
-          <AbsDimension x="32" y="32"/>
-        </Size>
-        <Anchors>
-          <Anchor point="LEFT" relativeTo="$parentEnableAll" relativePoint="RIGHT">
-            <Offset>
-              <AbsDimension x="5" y="0"/>
-            </Offset>
-          </Anchor>
-        </Anchors>
-        <Layers>
-          <Layer level="ARTWORK">
-            <FontString name="$parentText" inherits="GameFontHighlightSmall" text="Children">
-              <Anchors>
-                <Anchor point="LEFT" relativePoint="RIGHT">
-                  <Offset>
-                    <AbsDimension x="2" y="0"/>
-                  </Offset>
-                </Anchor>
-              </Anchors>
-            </FontString>
-          </Layer>
-        </Layers>
-        <Scripts>
-          <OnClick>
-						ACP:ToggleChildren(this:GetChecked());
-					</OnClick>
-        </Scripts>
-        <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
-        <PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
-        <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
-        <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
-        <DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
-      </CheckButton>
+ 
       <CheckButton name="$parent_NoRecurse">
         <Size>
           <AbsDimension x="32" y="32"/>
         </Size>
         <Anchors>
-          <Anchor point="LEFT" relativeTo="$parent_NoChildrenText" relativePoint="RIGHT">
+          <Anchor point="LEFT" relativeTo="$parentEnableAll" relativePoint="RIGHT">
             <Offset>
               <AbsDimension x="5" y="0"/>
             </Offset>
@@ -340,7 +306,7 @@
         </Layers>
         <Scripts>
           <OnClick>
-						ACP:ToggleRecursion(this:GetChecked());
+						ACP:ToggleRecursion(self:GetChecked());
 					</OnClick>
         </Scripts>
         <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
@@ -356,18 +322,31 @@
         <Anchors>
           <Anchor point="BOTTOMRIGHT">
             <Offset>
+              <AbsDimension x="-160" y="20"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            ReloadUI();
+    		</OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentBottomClose" inherits="UIPanelButtonTemplate" text="Close">
+        <Size>
+          <AbsDimension x="80" y="24"/>
+        </Size>
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
               <AbsDimension x="-50" y="20"/>
             </Offset>
           </Anchor>
         </Anchors>
         <Scripts>
           <OnClick>
-        --        if IsShiftKeyDown() then
-                    ReloadUI();
-        --        else
-		--			StaticPopup_Show("ACP_RELOADUI");
-		--		end
-    		</OnClick>
+				HideUIPanel(ACP_AddonList);
+		</OnClick>
         </Scripts>
       </Button>
       <Button name="$parentEntry1" inherits="ACP_AddonListEntryTemplate" id="1">
@@ -604,7 +583,7 @@
         </Layers>
         <Scripts>
           <OnVerticalScroll>
-						FauxScrollFrame_OnVerticalScroll(ACP_LINEHEIGHT, function() ACP:AddonList_OnShow() end);
+						FauxScrollFrame_OnVerticalScroll(self, offset, ACP_LINEHEIGHT, function() ACP:AddonList_OnShow() end);
 					</OnVerticalScroll>
         </Scripts>
       </ScrollFrame>

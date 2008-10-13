@@ -36,19 +36,28 @@ if (GetLocale() == 	"zhTW") then
     	["ACP: Some protected addons aren't loaded. Reload now?"]="ACP: 部分受保護的插件沒有被載入。現在重載介面?",
 	
 	
+		["Blizzard_AchievementUI"] = "Blizzard: Achievement",
 		["Blizzard_AuctionUI"] = "Blizzard: Auction",
+		["Blizzard_BarbershopUI"] = "Blizzard: Barbershop",
 		["Blizzard_BattlefieldMinimap"] = "Blizzard: Battlefield Minimap",
 		["Blizzard_BindingUI"] = "Blizzard: Binding",
+		["Blizzard_Calendar"] = "Blizzard: Calendar",
+		["Blizzard_CombatLog"] = "Blizzard: Combat Log",
 		["Blizzard_CombatText"] = "Blizzard: Combat Text",
-		["Blizzard_CraftUI"] = "Blizzard: Craft",
+		["Blizzard_FeedbackUI"] = "Blizzard: Feedback",
+		["Blizzard_GlyphUI"] = "Blizzard: Glyph",
 		["Blizzard_GMSurveyUI"] = "Blizzard: GM Survey",
+		["Blizzard_GuildBankUI"] = "Blizzard: GuildBank",
 		["Blizzard_InspectUI"] = "Blizzard: Inspect",
 		["Blizzard_ItemSocketingUI"] = "Blizzard: Item Socketing",
 		["Blizzard_MacroUI"] = "Blizzard: Macro",
 		["Blizzard_RaidUI"] = "Blizzard: Raid",
 		["Blizzard_TalentUI"] = "Blizzard: Talent",
+		["Blizzard_TimeManager"] = "Blizzard: TimeManager",
+		["Blizzard_TokenUI"] = "Blizzard: Token",
 		["Blizzard_TradeSkillUI"] = "Blizzard: Trade Skill",
 		["Blizzard_TrainerUI"] = "Blizzard: Trainer",
+		["Blizzard_VehicleUI"] = "Blizzard: Vehicle",
 	
 		["*** Enabling <%s> %s your UI ***"] = "*** 啟用<%s>，%s你的使用者介面 ***";
 		["*** Unknown Addon <%s> Required ***"] = "*** 需要未知的插件<%s> ***";

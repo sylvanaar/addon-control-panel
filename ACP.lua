@@ -261,19 +261,28 @@ local ACP_MAXADDONS = 20
 local ACP_DefaultSet = {}
 local ACP_DEFAULT_SET = 0
 local ACP_BLIZZARD_ADDONS = {
+	"Blizzard_AchievementUI",
 	"Blizzard_AuctionUI",
+	"Blizzard_BarbershopUI",
 	"Blizzard_BattlefieldMinimap",
 	"Blizzard_BindingUI",
+	"Blizzard_Calendar",
+	"Blizzard_CombatLog",
 	"Blizzard_CombatText",
-	"Blizzard_CraftUI",
+	"Blizzard_FeedbackUI",
+	"Blizzard_GlyphUI",
 	"Blizzard_GMSurveyUI",
+	"Blizzard_GuildBankUI",
 	"Blizzard_InspectUI",
 	"Blizzard_ItemSocketingUI",
 	"Blizzard_MacroUI",
 	"Blizzard_RaidUI",
 	"Blizzard_TalentUI",
+	"Blizzard_TimeManager",
+	"Blizzard_TokenUI",
 	"Blizzard_TradeSkillUI",
 	"Blizzard_TrainerUI",
+	"Blizzard_VehicleUI",
 }
 ACP.ACP_BLIZZARD_ADDONS = ACP_BLIZZARD_ADDONS
 local enabledList -- Used to prevent recursive loop in EnableAddon.
@@ -330,23 +339,6 @@ local function GetAddonIndex(addon, noerr)
 	end
 end
 
-
--- ACP_AddonList_NoChildren
-function ACP:ToggleChildren(val)
-    if val == nil then
-       savedVar.NoChildren = not savedVar.NoChildren
-    else
-       savedVar.NoChildren = not val
-    end
-
-    local frame = _G[ACP_FRAME_NAME.."_NoChildren"]
-    if frame then
-        frame:SetChecked(not savedVar.NoChildren)
-    end
-
---    ACP:Print(L["LoD Child Enable is now %s"]:format(CLR:Bool(not savedVar.NoChildren, tostring(not savedVar.NoChildren))))
-end
-
 function ACP:ToggleRecursion(val)
     if val == nil then
        savedVar.NoRecurse = not savedVar.NoRecurse
@@ -354,17 +346,8 @@ function ACP:ToggleRecursion(val)
        savedVar.NoRecurse = not val
     end
 
-    local frame2 = _G[ACP_FRAME_NAME.."_NoChildren"]
     local frame = _G[ACP_FRAME_NAME.."_NoRecurse"]
-    if frame then
-        frame:SetChecked(not savedVar.NoRecurse)
-        if not savedVar.NoRecurse then
-            frame2:Enable()
-        else
-            frame2:Disable()
-        end
-    end
-
+ 
 --    ACP:Print(L["Recursive Enable is now %s"]:format(CLR:Bool(not savedVar.NoRecurse, tostring(not savedVar.NoRecurse))))
 end
 
@@ -535,9 +518,7 @@ function ACP:OnEvent(event)
 			end
 		end
 
-    	self:ToggleChildren(not savedVar.NoChildren)
     	self:ToggleRecursion(not savedVar.NoRecurse)
-        _G[ACP_FRAME_NAME.."_NoChildrenText"]:SetText(L["LoD Children"])
         _G[ACP_FRAME_NAME.."_NoRecurseText"]:SetText(L["Recursive"])
 
 		if not eventLibrary then
@@ -917,8 +898,20 @@ addonListBuilders[GROUP_BY_NAME] = function()
 	table.sort(t, function(a, b)
 		local nameA = GetAddOnInfo(a)
 		local nameB = GetAddOnInfo(b)
-		local catA, nameA = strsplit("_-", nameA)
-		local catB, nameB = strsplit("_-", nameB)
+
+		local catA, catB
+			
+		if nameA:find("_") then 
+			catA, nameA  = strsplit("_", nameA)
+		else
+			catA, nameA  = strsplit("-", nameA)
+		end
+		
+		if nameB:find("_") then 
+			catB, nameB  = strsplit("_", nameB)
+		else
+			catB, nameB  = strsplit("-", nameB)
+		end
 
 		if catA:lower() == catB:lower() then
 			return (nameA or ""):lower() < (nameB or ""):lower()
@@ -1609,7 +1602,7 @@ end
 function ACP:SetButton_OnClick()
 	if not self.dropDownFrame then
 		local frame = CreateFrame("Frame", "ACP_SetDropDown", nil, "UIDropDownMenuTemplate")
-		UIDropDownMenu_Initialize(frame, function(level) self:SetDropDown_Populate(level) end, "MENU")
+		UIDropDownMenu_Initialize(frame, ACP.SetDropDown_Populate, "MENU") -- wotlk temp hack fixing the UIDropDown menu not displayed after pressing "Sets" button
 		self.dropDownFrame = frame
 	end
 	ToggleDropDownMenu(1, nil, self.dropDownFrame, this, 0, 0)
@@ -1617,6 +1610,7 @@ end
 
 
 function ACP:SetDropDown_Populate(level)
+	self = ACP -- wotlk temp hack fixing the UIDropDown menu not displayed after pressing "Sets" button
 	if not savedVar then return end
 
 	if level == 1 then
@@ -1752,11 +1746,10 @@ do
 	-- /script ACP:LocateEmbeds()
 	function ACP:LocateEmbeds()
 		local embeds = LibStub.libs
-		local minors = LibStub.minors
 	
 		for k,v in pairs(embeds) do
-			if self.embedded_libs[k] == nil or self.embedded_libs[k] < minors[k] then
-				self.embedded_libs[k] = minors[k]
+			if self.embedded_libs[k] ~= v then
+				self.embedded_libs[k] = v
 				self.embedded_libs_owners[k] = true
 			end
 		end
@@ -1859,7 +1852,6 @@ function ACP:ShowHintTooltip(index)
 	GameTooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT")
 
     GameTooltip:AddLine(L["Use SHIFT to override the current enabling of dependancies behaviour."])
-    GameTooltip:AddLine(L["Press CTRL to override the enabling of LoD children."])
 
 	GameTooltip:Show()
 end

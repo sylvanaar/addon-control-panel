@@ -31,24 +31,33 @@ if (GetLocale() == 	"zhCN") then
 		["Rename"] = "重命名";
 		["Use SHIFT to override the current enabling of dependancies behaviour."] = "使用 Shift 键无视目前的递归设定。",
 		["Press CTRL to override the enabling of LoD children."] = "使用 Ctrl 键无视目前的按需求加载子插件设定。",
-	    	["Click to enable protect mode. Protected addons will not be disabled"] = "点击启用保护模式。受保护插件不会被禁用。",
-	    	["when performing a reloadui."]="重载插件时。",
+				["Click to enable protect mode. Protected addons will not be disabled"] = "点击启用保护模式。受保护插件不会被禁用。",
+				["when performing a reloadui."]="重载插件时。",
 		["ACP: Some protected addons aren't loaded. Reload now?"]="ACP：部分受保护插件没有被加载。现在重载插件么？",
 
 
+		["Blizzard_AchievementUI"] = "Blizzard: Achievement",
 		["Blizzard_AuctionUI"] = "Blizzard: Auction",
+		["Blizzard_BarbershopUI"] = "Blizzard: Barbershop",
 		["Blizzard_BattlefieldMinimap"] = "Blizzard: Battlefield Minimap",
 		["Blizzard_BindingUI"] = "Blizzard: Binding",
+		["Blizzard_Calendar"] = "Blizzard: Calendar",
+		["Blizzard_CombatLog"] = "Blizzard: Combat Log",
 		["Blizzard_CombatText"] = "Blizzard: Combat Text",
-		["Blizzard_CraftUI"] = "Blizzard: Craft",
+		["Blizzard_FeedbackUI"] = "Blizzard: Feedback",
+		["Blizzard_GlyphUI"] = "Blizzard: Glyph",
 		["Blizzard_GMSurveyUI"] = "Blizzard: GM Survey",
+		["Blizzard_GuildBankUI"] = "Blizzard: GuildBank",
 		["Blizzard_InspectUI"] = "Blizzard: Inspect",
 		["Blizzard_ItemSocketingUI"] = "Blizzard: Item Socketing",
 		["Blizzard_MacroUI"] = "Blizzard: Macro",
 		["Blizzard_RaidUI"] = "Blizzard: Raid",
 		["Blizzard_TalentUI"] = "Blizzard: Talent",
+		["Blizzard_TimeManager"] = "Blizzard: TimeManager",
+		["Blizzard_TokenUI"] = "Blizzard: Token",
 		["Blizzard_TradeSkillUI"] = "Blizzard: Trade Skill",
 		["Blizzard_TrainerUI"] = "Blizzard: Trainer",
+		["Blizzard_VehicleUI"] = "Blizzard: Vehicle",
 
 		["*** Enabling <%s> %s your UI ***"] = "*** 启用 <%s>，%s 你的插件 ***";
 		["*** Unknown Addon <%s> Required ***"] = "*** 需要未知插件 <%s> ***";
@@ -61,5 +70,5 @@ if (GetLocale() == 	"zhCN") then
 		["Status"] = "状态";
 		["Dependencies"] = "依赖";
 		["Embeds"] = "内置";
-    } )
+		} )
 end
