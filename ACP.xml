@@ -118,7 +118,7 @@
         </Anchors>
         <Scripts>
           <OnEnter>
-				ACP:ShowHintTooltip(self.addon)
+				ACP:ShowHintTooltip(self, self.addon)
 			</OnEnter>
           <OnLeave>
 				GameTooltip:Hide()
@@ -137,7 +137,7 @@
     </Frames>
     <Scripts>
       <OnEnter>
-				ACP:ShowTooltip(self.addon)
+				ACP:ShowTooltip(self, self.addon)
 			</OnEnter>
       <OnLeave>
 				GameTooltip:Hide()
@@ -204,7 +204,7 @@
         </Anchors>
         <Scripts>
           <OnShow>
-            ACP:SortDropDown_OnShow()
+            ACP:SortDropDown_OnShow(self)
           </OnShow>
         </Scripts>
       </Button>
@@ -221,7 +221,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-						ACP:DisableAll_OnClick()
+						ACP:DisableAll_OnClick(self)
 					</OnClick>
         </Scripts>
       </Button>
@@ -239,7 +239,7 @@
         <Scripts>
           <OnClick>
 						EnableAllAddOns()
-						ACP:AddonList_OnShow()
+						ACP:AddonList_OnShow(self)
 					</OnClick>
         </Scripts>
       </Button>
@@ -256,7 +256,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-						ACP:CollapseAll_OnClick()
+						ACP:CollapseAll_OnClick(self)
 					</OnClick>
         </Scripts>
         <NormalTexture name="$parentIcon" file="Interface\Minimap\UI-Minimap-ZoomOutButton-Up"/>
@@ -275,7 +275,7 @@
         </Anchors>
         <Scripts>
           <OnClick>
-            ACP:SetButton_OnClick();
+            ACP:SetButton_OnClick(self);
 		</OnClick>
         </Scripts>
       </Button>
@@ -673,13 +673,13 @@
     </Layers>
     <Scripts>
       <OnLoad>
-				ACP:OnLoad()
+				ACP:OnLoad(self)
 			</OnLoad>
       <OnEvent>
-				ACP:OnEvent(event)
+				ACP:OnEvent(self, event, ...)
 			</OnEvent>
       <OnShow>
-				ACP:AddonList_OnShow()
+				ACP:AddonList_OnShow(self)
 			</OnShow>
     </Scripts>
   </Frame>
