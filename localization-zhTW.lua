@@ -34,7 +34,8 @@ if (GetLocale() == 	"zhTW") then
     	["Click to enable protect mode. Protected addons will not be disabled"] = "點擊啟用保護模式。受保護的插件",
     	["when performing a reloadui."]="重載介面後不會被停用。",
     	["ACP: Some protected addons aren't loaded. Reload now?"]="ACP: 部分受保護的插件沒有被載入。現在重載介面?",
-	
+		["Active Embeds"] = "運行中的程式集",
+	    ["Memory Usage"] = "記憶體用量",
 	
 		["Blizzard_AchievementUI"] = "Blizzard: Achievement",
 		["Blizzard_AuctionUI"] = "Blizzard: Auction",
@@ -68,7 +69,7 @@ if (GetLocale() == 	"zhTW") then
 		["Author"] = "作者";
 		["Version"] = "版本";
 		["Status"] = "狀態";
-		["Dependencies"] = "需要";
-		["Embeds"] = "內置";
+		["Dependencies"] = "附屬程式";
+		["Embeds"] = "程式集";
     } )
 end
