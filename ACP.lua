@@ -904,13 +904,13 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		if nameA:find("_") then 
 			catA, nameA  = strsplit("_", nameA)
 		else
-			catA, nameA  = strsplit("-", nameA)
+			catA, nameA  = nameA
 		end
 		
 		if nameB:find("_") then 
 			catB, nameB  = strsplit("_", nameB)
 		else
-			catB, nameB  = strsplit("-", nameB)
+			catB, nameB  = nameB
 		end
 
 		if catA:lower() == catB:lower() then
@@ -1522,7 +1522,7 @@ function ACP:AddonList_OnShow(this)
 				if (title) then
 
 				    if subCount and subCount > 0 then
-    				    title = title .. "  ("..tostring(subCount)..")"
+    				    title = title .. "  |cffffffff(|r"..tostring(subCount).."|cffffffff)|r"
     				end
 
 					title = title:gsub(" |cff7fff7f %-Ace2%-|r", ""):gsub("%-Ace2%-", ""):trim()
