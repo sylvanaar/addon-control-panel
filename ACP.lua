@@ -351,7 +351,7 @@ function ACP:ToggleRecursion(val)
 --    ACP:Print(L["Recursive Enable is now %s"]:format(CLR:Bool(not savedVar.NoRecurse, tostring(not savedVar.NoRecurse))))
 end
 
-function ACP:OnLoad()
+function ACP:OnLoad(this)
 
 	self.L = L
 	self.frame = _G[ACP_FRAME_NAME]
@@ -432,7 +432,7 @@ function ACP:OnLoad()
 		exclusive = 1,
 	}
 
-	local function OnRenameSet()
+	local function OnRenameSet(this)
 		local text = getglobal(this:GetParent():GetName().."EditBox"):GetText()
 		if text == "" then
 			text = nil
@@ -447,7 +447,7 @@ function ACP:OnLoad()
 		button2 = TEXT(CANCEL),
 		OnAccept = OnRenameSet,
 		EditBoxOnEnterPressed = OnRenameSet,
-		EditBoxOnEscapePressed = function()
+		EditBoxOnEscapePressed = function(this)
 			this:GetParent():Hide()
 		end,
 		timeout = 0,
@@ -488,7 +488,7 @@ end
 
 local eventLibrary, bugeventreged
 
-function ACP:OnEvent(event)
+function ACP:OnEvent(this, event, arg1, arg2, arg3)
 	if event == "VARIABLES_LOADED" then
 		if not ACP_Data then ACP_Data = {} end
 
@@ -521,27 +521,27 @@ function ACP:OnEvent(event)
     	self:ToggleRecursion(not savedVar.NoRecurse)
         _G[ACP_FRAME_NAME.."_NoRecurseText"]:SetText(L["Recursive"])
 
-		if not eventLibrary then
-		    eventLibrary = AceLibrary and AceLibrary:HasInstance("AceEvent-2.0") and AceLibrary("AceEvent-2.0") or nil
-		end
-
-		if eventLibrary and not bugeventreged then
-			 bugeventreged = true
-		     eventLibrary:RegisterEvent("BugGrabber_BugGrabbed", function() ACP:ProcessBugSack("current") end )
-        end
+--		if not eventLibrary then
+--		    eventLibrary = AceLibrary and AceLibrary:HasInstance("AceEvent-2.0") and AceLibrary("AceEvent-2.0") or nil
+--		end
+--
+--		if eventLibrary and not bugeventreged then
+--			 bugeventreged = true
+--		     eventLibrary:RegisterEvent("BugGrabber_BugGrabbed", function() ACP:ProcessBugSack("current") end )
+--        end
 
 		this:RegisterEvent("PLAYER_ENTERING_WORLD")
 		this:UnregisterEvent("VARIABLES_LOADED")
 	elseif event == "PLAYER_ALIVE" then
-		if not eventLibrary then
-		    eventLibrary = AceLibrary and AceLibrary:HasInstance("AceEvent-2.0") and AceLibrary("AceEvent-2.0") or nil
-			if not eventLibrary then eventLibrary = LibStub and LibStub:GetLibrary("AceEvent-3.0", true) end
-		end
-
-		if eventLibrary and not bugeventreged then
-			 bugeventreged = true
-		     eventLibrary:RegisterEvent("BugGrabber_BugGrabbed", function() ACP:ProcessBugSack("current") end )
-        end
+--		if not eventLibrary then
+--		    eventLibrary = AceLibrary and AceLibrary:HasInstance("AceEvent-2.0") and AceLibrary("AceEvent-2.0") or nil
+--			if not eventLibrary then eventLibrary = LibStub and LibStub:GetLibrary("AceEvent-3.0", true) end
+--		end
+--
+--		if eventLibrary and not bugeventreged then
+--			 bugeventreged = true
+--		     eventLibrary:RegisterEvent("BugGrabber_BugGrabbed", function() ACP:ProcessBugSack("current") end )
+--        end
 
 
     	for k,v in pairs(savedVar.ProtectedAddons) do
@@ -578,7 +578,7 @@ function ACP:OnEvent(event)
 		this:RegisterEvent("PLAYER_ALIVE")
 
 
-        ACP:ProcessBugSack("session")
+--        ACP:ProcessBugSack("session")
 	elseif event == "ADDON_LOADED" then
 		ACP:ADDON_LOADED(arg1)
 	end
@@ -601,42 +601,42 @@ function ACP:ResolveLibraryName(id)
 end
 
 
-function ACP:ProcessBugSack(which)
-    if BugSack then
-        local errs = BugSack:GetErrors(which)
-    	for i=1, #errs do
-    	    local str = errs[i].message
-    	    if type(str) == "table" then
-    	        str = table.concat(str)
-    	    end
-
-    	    local _,_,id = strfind(str, "Cannot find a library instance of ([_A-Za-z0-9-]+%.?%d?)")
-
-    	    if not id then
-    	        _,_,id = strfind(str, "Library \"([_A-Za-z0-9-]+%.?%d?)\" does not exist")
-    	    end
-
-    	    if not id then
-    	        _,_,id = strfind(str, ".-requires ([_A-Za-z0-9-]+%.?%d?)")
-    	    end
-
-    	    if id then
-                local name = self:ResolveLibraryName(id)
-
-        	    if name then
-        	        local _, _, _, enabled = GetAddOnInfo(name)
-                    if not enabled then
-                        local reload = Prat and Prat:GetReloadUILink("ACP") or L["Reload"]
-                	    ACP:Print(L["*** Enabling <%s> %s your UI ***"]:format(CLR:Addon(name), reload), 1.0, 1.0, 0.0)
-                	    ACP:EnableAddon(name)
-                    end
-            	else
-               	    ACP:Print(L["*** Unknown Addon <%s> Required ***"]:format(CLR:Addon(name)), 1.0, 0.0, 0.0)
-            	end
-            end
-    	end
-    end
-end
+--function ACP:ProcessBugSack(which)
+--    if BugSack then
+--        local errs = BugSack:GetErrors(which)
+--    	for i=1, #errs do
+--    	    local str = errs[i].message
+--    	    if type(str) == "table" then
+--    	        str = table.concat(str)
+--    	    end
+--
+--    	    local _,_,id = strfind(str, "Cannot find a library instance of ([_A-Za-z0-9-]+%.?%d?)")
+--
+--    	    if not id then
+--    	        _,_,id = strfind(str, "Library \"([_A-Za-z0-9-]+%.?%d?)\" does not exist")
+--    	    end
+--
+--    	    if not id then
+--    	        _,_,id = strfind(str, ".-requires ([_A-Za-z0-9-]+%.?%d?)")
+--    	    end
+--
+--    	    if id then
+--                local name = self:ResolveLibraryName(id)
+--
+--        	    if name then
+--        	        local _, _, _, enabled = GetAddOnInfo(name)
+--                    if not enabled then
+--                        local reload = Prat and Prat:GetReloadUILink("ACP") or L["Reload"]
+--                	    ACP:Print(L["*** Enabling <%s> %s your UI ***"]:format(CLR:Addon(name), reload), 1.0, 1.0, 0.0)
+--                	    ACP:EnableAddon(name)
+--                    end
+--            	else
+--               	    ACP:Print(L["*** Unknown Addon <%s> Required ***"]:format(CLR:Addon(name)), 1.0, 0.0, 0.0)
+--            	end
+--            end
+--    	end
+--    end
+--end
 
 --ACP_Data.NoRecurse
 --ACP_Data.NoChildren
@@ -933,7 +933,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		if acecategory == "Library" and not savedVar.ProtectedAddons[addonIndex] then
 		    table.insert(libs, addonIndex)
         else
-    		local category, content = strsplit("_-", name)
+    		local category, content = strsplit("_", name)
     		if not content then
     		    content = category
     			category = ""
@@ -1289,7 +1289,7 @@ end
 
 
 -- UI Controllers.
-function ACP:SortDropDown_OnShow()
+function ACP:SortDropDown_OnShow(this)
 	if not self.initSortDropDown then
 		UIDropDownMenu_Initialize(this, function() self:SortDropDown_Populate() end)
 		self.initSortDropDown = true
@@ -1405,7 +1405,7 @@ function ACP:AddonList_LoadNow(index)
 	ACP:AddonList_OnShow()
 end
 
-function ACP:AddonList_OnShow()
+function ACP:AddonList_OnShow(this)
 	local function setSecurity (obj, idx)
 		local width,height,iconWidth = 64,16,16
 		local increment = iconWidth/width
@@ -1599,7 +1599,7 @@ function ACP:AddonList_OnShow()
 	end
 end
 
-function ACP:SetButton_OnClick()
+function ACP:SetButton_OnClick(this)
 	if not self.dropDownFrame then
 		local frame = CreateFrame("Frame", "ACP_SetDropDown", nil, "UIDropDownMenuTemplate")
 		UIDropDownMenu_Initialize(frame, ACP.SetDropDown_Populate, "MENU") -- wotlk temp hack fixing the UIDropDown menu not displayed after pressing "Sets" button
@@ -1756,7 +1756,7 @@ do
 	end
 end
 
-function ACP:ShowTooltip(index)
+function ACP:ShowTooltip(this, index)
 	if not index then return end
 	local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(index)
 	local author = GetAddOnMetadata(name, "Author")
@@ -1848,7 +1848,7 @@ function ACP:ShowTooltip(index)
 end
 
 
-function ACP:ShowHintTooltip(index)
+function ACP:ShowHintTooltip(this, index)
 	GameTooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT")
 
     GameTooltip:AddLine(L["Use SHIFT to override the current enabling of dependancies behaviour."])
