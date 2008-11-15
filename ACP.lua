@@ -52,6 +52,13 @@ elseif (GetLocale() == "esES") then
 	AUTHOR = "Autor"
 	SEPARATE_LOD_LIST = "Lista CaD por separado"
 	GROUP_BY_NAME = "Agrupar por nombre"
+elseif (GetLocale() == "ruRU") then
+	DEFAULT = "По умолчанию"
+	TITLES = "Заголовкам"
+	ACE2 = "Ace2"
+	AUTHOR = "Автор"
+	SEPARATE_LOD_LIST = "Отдел. список ЗПТ"
+	GROUP_BY_NAME = "Группир. по имени"
 end
 
 --==============
