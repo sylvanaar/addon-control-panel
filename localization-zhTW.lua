@@ -19,7 +19,6 @@ if (GetLocale() == 	"zhTW") then
 		["No information available."] = "無可用的資訊。",
 		["Loaded"] = "已載入",
 		["Recursive"] = "遞迴",
-		["LoD Children"] = "隨需求載入子插件",
 		["Loadable OnDemand"] = "可隨需求載入",
 		["Disabled on reloadUI"] = "重載介面後停用",
 		["Default"] = "預設";
@@ -30,7 +29,6 @@ if (GetLocale() == 	"zhTW") then
 		["Remove from current selection"] = "從現在的選擇中移除";
 		["Rename"] = "重新命名";
 		["Use SHIFT to override the current enabling of dependancies behaviour."] = "使用Shift鍵無視目前的遞迴設定。",
-		["Press CTRL to override the enabling of LoD children."] = "使用Ctrl鍵無視目前的隨需求載入子插件設定。",
     	["Click to enable protect mode. Protected addons will not be disabled"] = "點擊啟用保護模式。受保護的插件",
     	["when performing a reloadui."]="重載介面後不會被停用。",
     	["ACP: Some protected addons aren't loaded. Reload now?"]="ACP: 部分受保護的插件沒有被載入。現在重載介面?",

@@ -19,7 +19,6 @@ if (GetLocale() == 	"zhCN") then
 		["No information available."] = "无可用信息。",
 		["Loaded"] = "已加载",
 		["Recursive"] = "递归",
-		["LoD Children"] = "需要时才加载的子插件",
 		["Loadable OnDemand"] = "需要时加载",
 		["Disabled on reloadUI"] = "重载插件后禁用",
 		["Default"] = "默认";
@@ -30,11 +29,11 @@ if (GetLocale() == 	"zhCN") then
 		["Remove from current selection"] = "移除当前选择";
 		["Rename"] = "重命名";
 		["Use SHIFT to override the current enabling of dependancies behaviour."] = "使用 Shift 键无视目前的递归设定。",
-		["Press CTRL to override the enabling of LoD children."] = "使用 Ctrl 键无视目前的按需求加载子插件设定。",
-				["Click to enable protect mode. Protected addons will not be disabled"] = "点击启用保护模式。受保护插件不会被禁用。",
-				["when performing a reloadui."]="重载插件时。",
+		["Click to enable protect mode. Protected addons will not be disabled"] = "点击启用保护模式。受保护插件不会被禁用。",
+		["when performing a reloadui."]="重载插件时。",
 		["ACP: Some protected addons aren't loaded. Reload now?"]="ACP：部分受保护插件没有被加载。现在重载插件么？",
-
+		["Active Embeds"] = "单独使用",
+		["Memory Usage"] = "内存占用",
 
 		["Blizzard_AchievementUI"] = "Blizzard: Achievement",
 		["Blizzard_AuctionUI"] = "Blizzard: Auction",
