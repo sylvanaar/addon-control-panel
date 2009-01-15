@@ -514,7 +514,9 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
     		ACP:ReloadAddonList()
         end
 
-
+        if savedVar.NoChildren == nil then
+            savedVar.NoChildren = true
+        end
 
 		for i = 1, GetNumAddOns() do
 			if IsAddOnLoaded(i) then
@@ -528,28 +530,9 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
     	self:ToggleRecursion(not savedVar.NoRecurse)
         _G[ACP_FRAME_NAME.."_NoRecurseText"]:SetText(L["Recursive"])
 
---		if not eventLibrary then
---		    eventLibrary = AceLibrary and AceLibrary:HasInstance("AceEvent-2.0") and AceLibrary("AceEvent-2.0") or nil
---		end
---
---		if eventLibrary and not bugeventreged then
---			 bugeventreged = true
---		     eventLibrary:RegisterEvent("BugGrabber_BugGrabbed", function() ACP:ProcessBugSack("current") end )
---        end
-
 		this:RegisterEvent("PLAYER_ENTERING_WORLD")
 		this:UnregisterEvent("VARIABLES_LOADED")
 	elseif event == "PLAYER_ALIVE" then
---		if not eventLibrary then
---		    eventLibrary = AceLibrary and AceLibrary:HasInstance("AceEvent-2.0") and AceLibrary("AceEvent-2.0") or nil
---			if not eventLibrary then eventLibrary = LibStub and LibStub:GetLibrary("AceEvent-3.0", true) end
---		end
---
---		if eventLibrary and not bugeventreged then
---			 bugeventreged = true
---		     eventLibrary:RegisterEvent("BugGrabber_BugGrabbed", function() ACP:ProcessBugSack("current") end )
---        end
-
 
     	for k,v in pairs(savedVar.ProtectedAddons) do
     	    if type(k) == "number" then savedVar.ProtectedAddons[k] = nil end
@@ -1006,7 +989,7 @@ end
 
 function ACP:ReloadAddonList()
 
-	local builder = savedVar.sorter
+ 	local builder = savedVar.sorter
 	if not builder then
 		builder = DEFAULT
 	end
