@@ -1404,6 +1404,8 @@ function ACP:AddonList_OnShow(this)
 		obj:SetTexCoord(left, right, 0, 1)
 	end
 
+	UpdateAddOnMemoryUsage()
+
 	local origNumAddons = GetNumAddOns()
 	numAddons = #sortedAddonList
 	FauxScrollFrame_Update(ACP_AddonList_ScrollFrame, numAddons, ACP_MAXADDONS, ACP_LINEHEIGHT, nil, nil, nil)
