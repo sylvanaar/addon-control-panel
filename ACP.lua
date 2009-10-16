@@ -440,12 +440,18 @@ function ACP:OnLoad(this)
 	}
 
 	local function OnRenameSet(this)
-		local text = getglobal(this:GetParent():GetName().."EditBox"):GetText()
+        local popup;
+        if this:GetParent():GetName() == "UIParent" then
+            popup = this
+        else
+            popup = this:GetParent()
+        end
+		local text = getglobal(popup:GetName().."EditBox"):GetText()
 		if text == "" then
 			text = nil
 		end
 		self:RenameSet(self.renamingSet, text)
-		this:GetParent():Hide()
+		popup:Hide()
 	end
 
 	StaticPopupDialogs["ACP_RENAMESET"] = {
