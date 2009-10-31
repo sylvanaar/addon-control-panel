@@ -7,6 +7,32 @@ ACP_LINEHEIGHT = 16
 
 ACP.CheckEvents = 0
 
+
+-- Handle various annoying special case names
+function ACP:SpecialCaseName(name)
+	local partof = GetAddOnMetadata(name, "X-Part-Of")
+
+	if partof ~= nil then
+		return partof.."_"..name
+	end
+
+	if name == "DBM-Core" then 	
+		return "DBM"
+	elseif name:match("DBM%-") then
+		return name:gsub("DBM%-", "DBM_")
+	elseif name:match("CT_") then
+		return name:gsub("CT_", "CT-")
+	elseif name:sub(1,1) == "+" or name:sub(1,1) == "!" then
+		return name:sub(2,-1)
+--	elseif name == "Auc-Advanced" then 
+--		return "Auc"
+--	elseif name:match("Auc%-") then
+--		return name:gsub("Auc%-", "Auc_")
+--	elseif
+	end
+
+	return name
+end
 --==============
 -- Localization
 --==============
@@ -269,6 +295,7 @@ local ACP_DefaultSet = {}
 local ACP_DEFAULT_SET = 0
 local ACP_BLIZZARD_ADDONS = {
 	"Blizzard_AchievementUI",
+	"Blizzard_ArenaUI",
 	"Blizzard_AuctionUI",
 	"Blizzard_BarbershopUI",
 	"Blizzard_BattlefieldMinimap",
@@ -276,8 +303,9 @@ local ACP_BLIZZARD_ADDONS = {
 	"Blizzard_Calendar",
 	"Blizzard_CombatLog",
 	"Blizzard_CombatText",
-	"Blizzard_FeedbackUI",
+	"Blizzard_DebugTools",
 	"Blizzard_GlyphUI",
+	"Blizzard_GMChatUI",
 	"Blizzard_GMSurveyUI",
 	"Blizzard_GuildBankUI",
 	"Blizzard_InspectUI",
@@ -289,21 +317,13 @@ local ACP_BLIZZARD_ADDONS = {
 	"Blizzard_TokenUI",
 	"Blizzard_TradeSkillUI",
 	"Blizzard_TrainerUI",
-	"Blizzard_VehicleUI",
 }
 ACP.ACP_BLIZZARD_ADDONS = ACP_BLIZZARD_ADDONS
 local enabledList -- Used to prevent recursive loop in EnableAddon.
 
 local function ParseVersion(version)
 	if type(version) == "string" then
-		if version:find("%$Revision: (%d+) %$") then
-			version = version:gsub("%$Revision: (%d+) %$", "%1")
-		elseif version:find("%$Rev: (%d+) %$") then
-			version = version:gsub("%$Rev: (%d+) %$", "%1")
-		elseif version:find("%$LastChangedRevision: (%d+) %$") then
-			version = version:gsub("%$LastChangedRevision: (%d+) %$", "%1")
-		end
-		version = version:trim()
+		version = version:gsub("@project%-revision@", "DEBUG"):trim()
 	end
 	return version
 end
@@ -329,7 +349,7 @@ local function GetAddonIndex(addon, noerr)
 		else
 		    if addon == "" then return nil end
 			for i=1, GetNumAddOns() do
-				local name = GetAddOnInfo(i)
+				local name = ACP:SpecialCaseName(GetAddOnInfo(i))
 				if name:lower() == addon:lower() then
 					return i
 				end
@@ -470,16 +490,19 @@ function ACP:OnLoad(this)
 		hasEditBox = 1,
 	}
 
-	ACP_BLIZZARD_ADDONS = setmetatable(ACP_BLIZZARD_ADDONS, {
-		__index = function(t,k)
-			for i=1, #t do
-				if t[i] == k then
-					t[k] = i
-					return i
-				end
-			end
-		end
-	} )
+	for i,v in ipairs(ACP_BLIZZARD_ADDONS) do
+		ACP_BLIZZARD_ADDONS[v] = i
+	end
+--	ACP_BLIZZARD_ADDONS = setmetatable(ACP_BLIZZARD_ADDONS, {
+--		__index = function(t,k)
+--			for i=1, #t do
+--				if t[i] == k then
+--
+--					return i
+--				end
+--			end
+--		end
+--	} )
 
 	local title = "Addon Control Panel"
 	local version = GetAddOnMetadata(ACP_ADDON_NAME, "Version")
@@ -896,6 +919,8 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		local nameB = GetAddOnInfo(b)
 
 		local catA, catB
+		
+		nameA, nameB =  ACP:SpecialCaseName(nameA),  ACP:SpecialCaseName(nameB)
 			
 		if nameA:find("_") then 
 			catA, nameA  = strsplit("_", nameA)
@@ -922,11 +947,11 @@ addonListBuilders[GROUP_BY_NAME] = function()
 	local t2 = t
 	t = {}
 	for i, addonIndex in ipairs(t2) do
-	    name = GetAddOnInfo(addonIndex)
+	    name = ACP:SpecialCaseName(GetAddOnInfo(addonIndex))
 
 	    local acecategory = GetAddOnMetadata(addonIndex, "X-Category")
 
-		if acecategory == "Library" and not savedVar.ProtectedAddons[addonIndex] then
+		if acecategory == "Library" and not ACP:IsAddOnProtected(name) then
 		    table.insert(libs, addonIndex)
         else
     		local category, content = strsplit("_", name)
@@ -945,10 +970,11 @@ addonListBuilders[GROUP_BY_NAME] = function()
 
 
 
-	table.insert(t, "Blizzard")
+    local blizz = {}
+    blizz.category = "Blizzard Addons"
 
 	for i=1, #ACP_BLIZZARD_ADDONS do
-		table.insert(t, numAddons+i)
+		table.insert(blizz, numAddons+i)
 	end
 
 	-- Now build the masterAddonList.
@@ -974,6 +1000,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 	end
 
 	table.insert(masterAddonList, libs)
+    table.insert(masterAddonList, blizz)
 end
 
 
@@ -1158,7 +1185,7 @@ function ACP:UnloadSet(set)
 	local name
 	for i = 1, GetNumAddOns() do
 		name = GetAddOnInfo(i)
-		if name ~= ACP_ADDON_NAME and ACP:FindAddon( list, name ) then
+		if name ~= ACP_ADDON_NAME and ACP:FindAddon( list, name ) and not ACP:IsAddOnProtected(name) then
 			DisableAddOn(name)
 		end
 	end
@@ -1200,6 +1227,13 @@ function ACP:LoadSet(set)
 
 end
 
+function ACP:IsAddOnProtected(addon)
+	local addon = GetAddOnInfo(addon)
+	if addon and savedVar.ProtectedAddons then
+		return savedVar.ProtectedAddons[addon]
+	end
+end
+
 function ACP:Security_OnClick(addon)
      local addon = GetAddOnInfo(addon)
      if addon then
@@ -1239,6 +1273,7 @@ function ACP:RenameSet(set, name)
 end
 
 -- Rebuild sortedAddonList from masterAddonList
+
 function ACP:RebuildSortedAddonList()
 	for k in pairs(sortedAddonList) do
 		sortedAddonList[k] = nil
@@ -1256,12 +1291,13 @@ function ACP:RebuildSortedAddonList()
 				end
 			end
 		else
-			addon = GetAddonIndex(addon)
+			--addon = GetAddonIndex(addon)
 			table.insert(sortedAddonList, addon)
 		end
 	end
 
-
+--	ACP.masterAddonList = masterAddonList
+--	ACP.sortedAddonList = sortedAddonList
 end
 
 function ACP:SetMasterAddonBuilder(sorter)
@@ -1494,16 +1530,18 @@ function ACP:AddonList_OnShow(this)
 				local name, title, notes, enabled, loadable, reason, security
 				if (addonIdx > origNumAddons) then
 					name = ACP_BLIZZARD_ADDONS[(addonIdx-origNumAddons)]
+					name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(name)
+--					obj.addon = name
+--					title = L[name]
+--					notes = ""
+--					enabled = 1
+--					loadable = 1
+--					if (IsAddOnLoaded(name)) then
+--						reason = "LOADED"
+--						loadable = 1
+--					end
+--					security = "SECURE"
 					obj.addon = name
-					title = L[name]
-					notes = ""
-					enabled = 1
-					loadable = 1
-					if (IsAddOnLoaded(name)) then
-						reason = "LOADED"
-						loadable = 1
-					end
-					security = "SECURE"
 				else
 					name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(addonIdx)
 					obj.addon = addonIdx
@@ -1756,6 +1794,11 @@ end
 
 function ACP:ShowTooltip(this, index)
 	if not index then return end
+
+	if type(index) == "number" and (index > GetNumAddOns()) then
+		index = ACP_BLIZZARD_ADDONS[(index-GetNumAddOns())]
+	end
+
 	local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(index)
 	local author = GetAddOnMetadata(name, "Author")
 	local version = ParseVersion(GetAddOnMetadata(name, "Version"))
@@ -1830,7 +1873,7 @@ function ACP:ShowTooltip(this, index)
 	    GameTooltip:AddLine(actives, 1,0.78,0, 1)
 	end
 
-	UpdateAddOnMemoryUsage()
+	--UpdateAddOnMemoryUsage()
 	local mem = GetAddOnMemoryUsage(index)
 	local text2
 	if mem > 1024 then
