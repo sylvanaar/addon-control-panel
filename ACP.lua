@@ -318,6 +318,7 @@ local ACP_BLIZZARD_ADDONS = {
 	"Blizzard_TradeSkillUI",
 	"Blizzard_TrainerUI",
 }
+local NUM_BLIZZARD_ADDONS = #ACP_BLIZZARD_ADDONS
 ACP.ACP_BLIZZARD_ADDONS = ACP_BLIZZARD_ADDONS
 local enabledList -- Used to prevent recursive loop in EnableAddon.
 
@@ -688,7 +689,7 @@ addonListBuilders[DEFAULT] = function()
 	for i=1, numAddons do
 		table.insert(masterAddonList, i)
 	end
-	for i=1, #ACP_BLIZZARD_ADDONS do
+	for i=1, NUM_BLIZZARD_ADDONS do
 		table.insert(masterAddonList, numAddons+i)
 	end
 end
@@ -710,7 +711,7 @@ addonListBuilders[TITLES] = function()
 		return formattitle(nameA) < formattitle(nameB)
 	end )
 
-	for i=1, #ACP_BLIZZARD_ADDONS do
+	for i=1, NUM_BLIZZARD_ADDONS do
 		table.insert(masterAddonList, numAddons+i)
 	end
 end
@@ -752,7 +753,7 @@ addonListBuilders[ACE2] = function()
 
 	table.insert(t, "Blizzard")
 
-	for i=1, #ACP_BLIZZARD_ADDONS do
+	for i=1, NUM_BLIZZARD_ADDONS do
 		table.insert(t, numAddons+i)
 	end
 
@@ -813,7 +814,7 @@ addonListBuilders[AUTHOR] = function()
 
 	table.insert(t, "Blizzard")
 
-	for i=1, #ACP_BLIZZARD_ADDONS do
+	for i=1, NUM_BLIZZARD_ADDONS do
 		table.insert(t, numAddons+i)
 	end
 
@@ -861,7 +862,7 @@ addonListBuilders["Ace2 Libs And Packages"] = function()
 	for i=1, numAddons do
 		table.insert(masterAddonList, i)
 	end
-	for i=1, #ACP_BLIZZARD_ADDONS do
+	for i=1, NUM_BLIZZARD_ADDONS do
 		table.insert(masterAddonList, numAddons+i)
 	end
 end
@@ -891,7 +892,7 @@ addonListBuilders[SEPARATE_LOD_LIST] = function()
 		end
 	end
 
-	for i=1, #ACP_BLIZZARD_ADDONS do
+	for i=1, NUM_BLIZZARD_ADDONS do
 		table.insert(blizz, numAddons+i)
 	end
 
@@ -973,7 +974,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     local blizz = {}
     blizz.category = "Blizzard Addons"
 
-	for i=1, #ACP_BLIZZARD_ADDONS do
+	for i=1, NUM_BLIZZARD_ADDONS do
 		table.insert(blizz, numAddons+i)
 	end
 
