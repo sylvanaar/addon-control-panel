@@ -351,7 +351,7 @@ local function GetAddonIndex(addon, noerr)
 		    if addon == "" then return nil end
 			for i=1, GetNumAddOns() do
 				local name = ACP:SpecialCaseName(GetAddOnInfo(i))
-				if name:lower() == addon:lower() then
+				if name:lower() ==  ACP:SpecialCaseName(addon):lower() then
 					return i
 				end
 			end
