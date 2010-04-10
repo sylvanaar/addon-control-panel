@@ -991,7 +991,9 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		    else
     			local t = {}
     			t.category = addon
-    			table.remove(currPos, #currPos)
+--    			table.remove(currPos, #currPos)
+                local addonname = GetAddOnInfo(currPos[#currPos])
+                if (addonname == addon) then table.remove(currPos,#currPos) end
     			table.insert(list, t)
     			currPos = t
     		end
