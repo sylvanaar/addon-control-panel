@@ -942,6 +942,8 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		end
 	end )
 
+    print(t)
+
 	-- Insert the category titles into the list.
 	local prevCategory = ""
 	local name = nil
@@ -969,7 +971,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     	end
 	end
 
-
+    print(t)
 
     local blizz = {}
     blizz.category = "Blizzard Addons"
@@ -992,7 +994,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     			local t = {}
     			t.category = addon
 --    			table.remove(currPos, #currPos)
-                local addonname = GetAddOnInfo(currPos[#currPos])
+                local addonname =  ACP:SpecialCaseName(GetAddOnInfo(currPos[#currPos]))
                 if (addonname == addon) then table.remove(currPos,#currPos) end
     			table.insert(list, t)
     			currPos = t
@@ -1001,6 +1003,8 @@ addonListBuilders[GROUP_BY_NAME] = function()
    			table.insert(currPos, addon)
 		end
 	end
+
+    print(masterAddonList)
 
 	table.insert(masterAddonList, libs)
     table.insert(masterAddonList, blizz)
