@@ -24,6 +24,8 @@ function ACP:SpecialCaseName(name)
 		return name:gsub("CT_", "CT-")
 	elseif name:sub(1,1) == "+" or name:sub(1,1) == "!" then
 		return name:sub(2,-1)
+	elseif name == "ShadowedUF_Options" then
+	    return "ShadowedUnitFrames_Options"
 --	elseif name == "Auc-Advanced" then 
 --		return "Auc"
 --	elseif name:match("Auc%-") then
@@ -942,7 +944,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		end
 	end )
 
-    print(t)
+    
 
 	-- Insert the category titles into the list.
 	local prevCategory = ""
@@ -971,7 +973,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     	end
 	end
 
-    print(t)
+    
 
     local blizz = {}
     blizz.category = "Blizzard Addons"
@@ -1004,7 +1006,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		end
 	end
 
-    print(masterAddonList)
+    
 
 	table.insert(masterAddonList, libs)
     table.insert(masterAddonList, blizz)
