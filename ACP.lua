@@ -22,7 +22,7 @@ function ACP:SpecialCaseName(name)
 		return name:gsub("DBM%-", "DBM_")
 	elseif name:match("CT_") then
 		return name:gsub("CT_", "CT-")
-	elseif name:sub(1,1) == "+" or name:sub(1,1) == "!" then
+	elseif name:sub(1,1) == "+" or name:sub(1,1) == "!" or name:sub(1,1) == "_" then
 		return name:sub(2,-1)
 	elseif name == "ShadowedUF_Options" then
 	    return "ShadowedUnitFrames_Options"
