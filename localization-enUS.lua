@@ -33,6 +33,7 @@ ACP:UpdateLocale( {
     ["ACP: Some protected addons aren't loaded. Reload now?"]=true,
 	["Active Embeds"] = true,
 	["Memory Usage"] = true,
+	["Close"] = true,
 	
 	["Blizzard_AchievementUI"] = "Blizzard: Achievement",
 	["Blizzard_AuctionUI"] = "Blizzard: Auction",
