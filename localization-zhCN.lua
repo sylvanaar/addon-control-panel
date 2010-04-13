@@ -69,5 +69,6 @@ if (GetLocale() == 	"zhCN") then
 		["Status"] = "状态";
 		["Dependencies"] = "依赖";
 		["Embeds"] = "内置";
+		["Close"] = "关闭";
 		} )
 end

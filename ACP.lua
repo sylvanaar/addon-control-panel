@@ -397,8 +397,7 @@ function ACP:OnLoad(this)
 	_G[ACP_FRAME_NAME.."EnableAll"]:SetText(L["Enable All"])
 	_G[ACP_FRAME_NAME.."SetButton"]:SetText(L["Sets"])
 	_G[ACP_FRAME_NAME.."_ReloadUI"]:SetText(L["ReloadUI"])
-
-
+    _G[ACP_FRAME_NAME.."BottomClose"]:SetText(L["Close"])
 
 	UIPanelWindows[ACP_FRAME_NAME] = { area = "center", pushable = 0, whileDead = 1 }
 	StaticPopupDialogs["ACP_RELOADUI"] = {
