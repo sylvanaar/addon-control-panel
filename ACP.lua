@@ -326,7 +326,7 @@ local enabledList -- Used to prevent recursive loop in EnableAddon.
 
 local function ParseVersion(version)
 	if type(version) == "string" then
-		version = version:gsub("@project%-revision@", "DEBUG"):trim()
+		version = version:gsub("@project%-version@", CLR:Colorize("ffa0a0", "DEBUG")):trim()
 	end
 	return version
 end
@@ -510,7 +510,7 @@ function ACP:OnLoad(this)
 	local version = GetAddOnMetadata(ACP_ADDON_NAME, "Version")
 	if version then
 		version = ParseVersion(version)
-		title = title.." "..version
+		title = title.." ("..version..")"
 	end
 	ACP_AddonListHeaderTitle:SetText(title)
 	this:RegisterEvent("VARIABLES_LOADED")
