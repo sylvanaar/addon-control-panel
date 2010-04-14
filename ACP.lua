@@ -995,10 +995,13 @@ addonListBuilders[GROUP_BY_NAME] = function()
     			local t = {}
     			t.category = addon
 --    			table.remove(currPos, #currPos)
-                local addonname =  ACP:SpecialCaseName(GetAddOnInfo(currPos[#currPos]))
-                if (addonname == addon) then table.remove(currPos,#currPos) end
-    			table.insert(list, t)
-    			currPos = t
+                local addonpos = currPos[#currPos]
+                if addonpos then
+                    local addonname =  ACP:SpecialCaseName(GetAddOnInfo(addonpos))
+                    if (addonname == addon) then table.remove(currPos,#currPos) end
+        			table.insert(list, t)
+        			currPos = t
+        		end
     		end
 		else
    			table.insert(currPos, addon)
