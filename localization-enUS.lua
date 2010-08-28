@@ -1,5 +1,6 @@
-﻿if not ACP then return end
+if not ACP then return end
 
+--@debug@
 ACP:UpdateLocale( {
 	["Reload your User Interface?"] = true,
 	["Save the current addon list to [%s]?"] = true,
@@ -34,7 +35,7 @@ ACP:UpdateLocale( {
 	["Active Embeds"] = true,
 	["Memory Usage"] = true,
 	["Close"] = true,
-	
+
 	["Blizzard_AchievementUI"] = "Blizzard: Achievement",
 	["Blizzard_AuctionUI"] = "Blizzard: Auction",
 	["Blizzard_BarbershopUI"] = "Blizzard: Barbershop",
@@ -57,7 +58,7 @@ ACP:UpdateLocale( {
 	["Blizzard_TradeSkillUI"] = "Blizzard: Trade Skill",
 	["Blizzard_TrainerUI"] = "Blizzard: Trainer",
 	["Blizzard_VehicleUI"] = "Blizzard: Vehicle",
-	
+
 	["*** Enabling <%s> %s your UI ***"] = true;
 	["*** Unknown Addon <%s> Required ***"] = true;
 	["LoD Child Enable is now %s"] = true;
@@ -70,3 +71,10 @@ ACP:UpdateLocale( {
 	["Dependencies"] = true;
 	["Embeds"] = true;
 } )
+--@enddebug@
+
+--[===[@non-debug@
+
+@localization(locale="enUS", format="lua_table")@
+
+--@end-non-debug@]===]
