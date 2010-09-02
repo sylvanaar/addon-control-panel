@@ -235,7 +235,12 @@ function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
     local build = select(4, GetBuildInfo())
     if build <= 30300 then return true end
 
-    local compatiblity = GetAddOnMetadata(addon, "X-Compatible-With")
+	local addonnum = tonumber(addon)
+	if not addonnum or (addonnum and (addonnum == 0 or addonnum > GetNumAddOns())) then
+		return true -- Get to the choppa!
+	end
+
+    local compatiblity = GetAddOnMetadata(addonnum, "X-Compatible-With")
     if compatiblity == nil then return nil end
 
     compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= build) or false  
