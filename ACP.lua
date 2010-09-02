@@ -232,10 +232,13 @@ local function getreason(r)
 end
 
 function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
+    local build = select(4, GetBuildInfo())
+    if build <= 30300 then return true end
+
     local compatiblity = GetAddOnMetadata(addon, "X-Compatible-With")
     if compatiblity == nil then return nil end
 
-    compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= select(4, GetBuildInfo())) or false  
+    compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= build) or false  
     
     return compatiblity
 end
