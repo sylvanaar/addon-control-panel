@@ -249,6 +249,11 @@ function ACP:GetAddonStatus(addon)
 		return -- Get to the choppa!
 	end
 
+    if (self:IsAddonCompatibleWithCurrentIntefaceVersion(addon) == false) then
+        return "FF0000", "INCOMPATIBLE"
+    end
+
+
 	local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(addon)
 
 	if reason == "MISSING" and type(addon) == "string" then
@@ -1576,8 +1581,11 @@ function ACP:AddonList_OnShow(this)
 					titleText:SetTextColor(0.5,0.5,0.5)
 				end
 				
-				if (not self:IsAddonCompatibleWithCurrentIntefaceVersion(addonIdx)) then
+				local compat = self:IsAddonCompatibleWithCurrentIntefaceVersion(addonIdx) 
+				if compat == nil then
 				    titleText:SetTextColor(1,0.7,0.7)
+				elseif compat == false then
+				    titleText:SetTextColor(1,0.1,0.1)
 				end
 				
 				if (title) then
