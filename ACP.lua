@@ -1,4 +1,4 @@
-﻿--==============
+--==============
 -- Global Variables
 --==============
 ACP = {}
@@ -231,6 +231,15 @@ local function getreason(r)
 	return reasons[r]
 end
 
+function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
+    local compatiblity = GetAddOnMetadata(addon, "X-Compatible-With")
+    if compatiblity == nil then return nil end
+
+    compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= select(4, GetBuildInfo())) or false  
+    
+    return compatiblity
+end
+
 function ACP:GetAddonStatus(addon)
 	local addon = addon
 
@@ -244,9 +253,9 @@ function ACP:GetAddonStatus(addon)
 
 	if reason == "MISSING" and type(addon) == "string" then
 	    addon = self:ResolveLibraryName(addon) or addon
-	end
+	end 
 
-
+    
 	local loaded  = IsAddOnLoaded(addon)
 	local isondemand = IsAddOnLoadOnDemand(addon)
 	local color, note
@@ -1566,6 +1575,11 @@ function ACP:AddonList_OnShow(this)
 				else
 					titleText:SetTextColor(0.5,0.5,0.5)
 				end
+				
+				if (not self:IsAddonCompatibleWithCurrentIntefaceVersion(addonIdx)) then
+				    titleText:SetTextColor(1,0.7,0.7)
+				end
+				
 				if (title) then
 
 				    if subCount and subCount > 0 then
@@ -1895,8 +1909,22 @@ function ACP:ShowTooltip(this, index)
 	
 	GameTooltip:AddLine(CLR:Label(L["Memory Usage"])..": "..text2, 1,0.78,0, 1)
 
-	GameTooltip:Show()
 
+	
+	
+    local compat = self:IsAddonCompatibleWithCurrentIntefaceVersion(index)
+    
+    if compat == nil then
+        compat = CLR:Bool(compat, "Unknown")
+    elseif compat then
+        compat = CLR:Bool(compat, "Yes")
+    else
+        compat = CLR:Off(compat, "No")
+    end
+    
+    GameTooltip:AddLine(CLR:Label("Compatible")..": "..compat, 1,0.78,0, 1)
+
+	GameTooltip:Show()
 end
 
 
