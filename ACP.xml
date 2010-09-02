@@ -156,10 +156,10 @@
             </OnLoad>-->
             <OnShow>
             GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()+25);
-            if (GameMenuButtonRatings:IsShown()) then
-                self:SetPoint("TOP", GameMenuButtonRatings, "BOTTOM", 0, -1);
+            if (GameMenuButtonKeybindings:IsShown()) then
+                self:SetPoint("TOP", GameMenuButtonKeybindings, "BOTTOM", 0, -1);
             end;
-            GameMenuButtonLogout:SetPoint("TOP",self:GetName(),"BOTTOM",0,-1);
+            GameMenuButtonMacros:SetPoint("TOP",self:GetName(),"BOTTOM",0,-1);
         </OnShow>
             <OnHide>
             GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()-25);
