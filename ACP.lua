@@ -16,7 +16,7 @@ function ACP:SpecialCaseName(name)
 		return partof.."_"..name
 	end
 
-	if name == "DBM-Core" then 	
+	if name == "DBM-Core" then
 		return "DBM"
 	elseif name:match("DBM%-") then
 		return name:gsub("DBM%-", "DBM_")
@@ -26,7 +26,7 @@ function ACP:SpecialCaseName(name)
 		return name:sub(2,-1)
 	elseif name == "ShadowedUF_Options" then
 	    return "ShadowedUnitFrames_Options"
---	elseif name == "Auc-Advanced" then 
+--	elseif name == "Auc-Advanced" then
 --		return "Auc"
 --	elseif name:match("Auc%-") then
 --		return name:gsub("Auc%-", "Auc_")
@@ -233,7 +233,6 @@ end
 
 function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
     local build = select(4, GetBuildInfo())
-    if build <= 30300 then return true end
 
 	local addonnum = tonumber(addon)
 	if not addonnum or (addonnum and (addonnum == 0 or addonnum > GetNumAddOns())) then
@@ -241,11 +240,18 @@ function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
 	end
 
     local compatiblity = GetAddOnMetadata(addonnum, "X-Compatible-With")
-    if compatiblity == nil then return nil end
+    local compatiblity_low = GetAddOnMetadata(addonnum, "X-Since-Interface")
 
-    compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= build) or false  
-    
-    return compatiblity
+    if compatiblity then
+		compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= build) or false
+	end
+
+    if compatiblity_low then
+        compatiblity_low = tonumber(compatiblity_low) and (tonumber(compatiblity_low) <= build) or false
+    end
+
+    return compatiblity, compatiblity_low
+
 end
 
 function ACP:GetAddonStatus(addon)
@@ -257,8 +263,12 @@ function ACP:GetAddonStatus(addon)
 		return -- Get to the choppa!
 	end
 
-    if (self:IsAddonCompatibleWithCurrentIntefaceVersion(addon) == false) then
-        return "FF0000", "INCOMPATIBLE"
+	local high, low = self:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
+    if (low == false) then
+        return "FF0000", getreason("INTERFACE_VERSION")
+    end
+    if (high == false) then
+        return "FF0000", getreason("INCOMPATIBLE")
     end
 
 
@@ -266,9 +276,9 @@ function ACP:GetAddonStatus(addon)
 
 	if reason == "MISSING" and type(addon) == "string" then
 	    addon = self:ResolveLibraryName(addon) or addon
-	end 
+	end
 
-    
+
 	local loaded  = IsAddOnLoaded(addon)
 	local isondemand = IsAddOnLoadOnDemand(addon)
 	local color, note
@@ -399,7 +409,7 @@ function ACP:ToggleRecursion(val)
     end
 
     local frame = _G[ACP_FRAME_NAME.."_NoRecurse"]
- 
+
 --    ACP:Print(L["Recursive Enable is now %s"]:format(CLR:Bool(not savedVar.NoRecurse, tostring(not savedVar.NoRecurse))))
 end
 
@@ -597,11 +607,11 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
     	    local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(k)
     	    if reason == 'MISSING' then
     	    	savedVar.ProtectedAddons[k] = nil
-    	    elseif (not enabled) or enabled == 0 then 
-    	    	EnableAddOn(k) 
-    	    	reloadRequired=true 
+    	    elseif (not enabled) or enabled == 0 then
+    	    	EnableAddOn(k)
+    	    	reloadRequired=true
     	    end
-    	  
+
         end
 
         if reloadRequired then
@@ -943,16 +953,16 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		local nameB = GetAddOnInfo(b)
 
 		local catA, catB
-		
+
 		nameA, nameB =  ACP:SpecialCaseName(nameA),  ACP:SpecialCaseName(nameB)
-			
-		if nameA:find("_") then 
+
+		if nameA:find("_") then
 			catA, nameA  = strsplit("_", nameA)
 		else
 			catA, nameA  = nameA
 		end
-		
-		if nameB:find("_") then 
+
+		if nameB:find("_") then
 			catB, nameB  = strsplit("_", nameB)
 		else
 			catB, nameB  = nameB
@@ -965,7 +975,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		end
 	end )
 
-    
+
 
 	-- Insert the category titles into the list.
 	local prevCategory = ""
@@ -994,7 +1004,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     	end
 	end
 
-    
+
 
     local blizz = {}
     blizz.category = "Blizzard Addons"
@@ -1030,7 +1040,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 		end
 	end
 
-    
+
 
 	table.insert(masterAddonList, libs)
     table.insert(masterAddonList, blizz)
@@ -1229,7 +1239,7 @@ end
 
 function ACP:ClearSelectionAndLoadSet(set)
 	self:DisableAll_OnClick()
-	
+
 	self:LoadSet(set)
 end
 
@@ -1588,14 +1598,7 @@ function ACP:AddonList_OnShow(this)
 				else
 					titleText:SetTextColor(0.5,0.5,0.5)
 				end
-				
-				local compat = self:IsAddonCompatibleWithCurrentIntefaceVersion(addonIdx) 
-				if compat == nil then
-				    titleText:SetTextColor(1,0.7,0.7)
-				elseif compat == false then
-				    titleText:SetTextColor(1,0.1,0.1)
-				end
-				
+
 				if (title) then
 
 				    if subCount and subCount > 0 then
@@ -1767,8 +1770,8 @@ function ACP:SetDropDown_Populate(level)
 		info.func = function() self:LoadSet(UIDROPDOWNMENU_MENU_VALUE) end
 		info.notCheckable = 1
 		UIDropDownMenu_AddButton(info, level)
-		
-		
+
+
 		info = UIDropDownMenu_CreateInfo()
 		info.text = L["Remove from current selection"]
 		info.func = function() self:UnloadSet(UIDROPDOWNMENU_MENU_VALUE) end
@@ -1804,26 +1807,26 @@ do
 	ACP.embedded_libs_owners = {}
 
 
-	function ACP:ADDON_LOADED(name)	
+	function ACP:ADDON_LOADED(name)
 		if not LibStub then return end
 		self:LocateEmbeds()
-	
-		if name == "ACP" or name:sub(9) == "Blizzard_" then 
+
+		if name == "ACP" or name:sub(9) == "Blizzard_" then
 			name = "???"
 		end
-	
+
 		for k,v in pairs(ACP.embedded_libs_owners) do
 			if type(v) == "boolean" then
 				ACP.embedded_libs_owners[k] = name
 			end
 		end
-	
+
 	end
-	
+
 	-- /script ACP:LocateEmbeds()
 	function ACP:LocateEmbeds()
 		local embeds = LibStub.libs
-	
+
 		for k,v in pairs(embeds) do
 			if self.embedded_libs[k] ~= v then
 				self.embedded_libs[k] = v
@@ -1903,14 +1906,14 @@ function ACP:ShowTooltip(this, index)
 	local actives = nil
 	for k,v in pairs(self.embedded_libs_owners) do
 		if v == name then
-			if actives == nil then 
+			if actives == nil then
 				actives = CLR:Label(L["Active Embeds"])..": "..CLR:ActiveEmbed(k)
 			else
 				actives = actives..", "..CLR:ActiveEmbed(k)
 			end
 		end
 	end
-	if actives then 
+	if actives then
 	    GameTooltip:AddLine(actives, 1,0.78,0, 1)
 	end
 
@@ -1922,23 +1925,23 @@ function ACP:ShowTooltip(this, index)
 	else
 		text2 = ("|cff8080ff%.0f|r KiB"):format(mem)
 	end
-	
+
 	GameTooltip:AddLine(CLR:Label(L["Memory Usage"])..": "..text2, 1,0.78,0, 1)
 
 
-	
-	
-    local compat = self:IsAddonCompatibleWithCurrentIntefaceVersion(index)
-    
-    if compat == nil then
-        compat = CLR:Bool(compat, "Unknown")
-    elseif compat then
-        compat = CLR:Bool(compat, "Yes")
-    else
-        compat = CLR:Off(compat, "No")
-    end
-    
-    GameTooltip:AddLine(CLR:Label("Compatible")..": "..compat, 1,0.78,0, 1)
+
+
+    local high, low = self:IsAddonCompatibleWithCurrentIntefaceVersion(index)
+
+    if low == false then
+		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(false, "No - Game Client Too Old"), 1,0.78,0, 1)
+    elseif high == false then
+		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(false, "No - Addon Outdated"), 1,0.78,0, 1)
+	elseif high or low then
+		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(true, "Yes"), 1,0.78,0, 1)
+	end
+
+
 
 	GameTooltip:Show()
 end
