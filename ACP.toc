@@ -1,5 +1,7 @@
 ﻿## Interface: 30300
 ## X-Compatible-With: 40000
+## X-Since-Interface: 30300
+
 ## Title: Addon Control Panel
 ## Author: sylvanaar, Rophy, Saien
 ## Notes: Adds an addon manager in game via the 'Addons' menu. Special support for multi-part addons. Based on rMCP by Rophy.
