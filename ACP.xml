@@ -77,7 +77,7 @@
                         ACP:Security_OnClick(self:GetParent().addon)
                     </OnClick>
                     <OnEnter>
-                        ACP:ShowSecurityTooltip()
+                        ACP:ShowSecurityTooltip(self)
                     </OnEnter>
                     <OnLeave>
                         GameTooltip:Hide()
@@ -677,6 +677,10 @@
             <OnShow>
                 ACP:AddonList_OnShow(self)
             </OnShow>
+        	<!--<OnKeyDown>-->
+				<!--ACP:OnKeyDown(self, key);-->
+			<!--</OnKeyDown>-->
+            
         </Scripts>
     </Frame>
 </Ui>
