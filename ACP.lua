@@ -10,9 +10,9 @@ ACP.CheckEvents = 0
 
 ACP.TAGS = {
     PART_OF = "X-Part-Of",
-    INTERFACE_MIN = "X-Min-Inteface",
-    INTERFACE_MIN_ORG = "X-Since-Inteface",
-    INTERFACE_MAX = "X-Max-Inteface",
+    INTERFACE_MIN = "X-Min-Interface",
+    INTERFACE_MIN_ORG = "X-Since-Interface",
+    INTERFACE_MAX = "X-Max-Interface",
     INTERFACE_MAX_ORG = "X-Compatible-With",
 }
 
@@ -247,21 +247,23 @@ function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
 		return true -- Get to the choppa!
 	end
 
-    local compatiblity =  GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX) or
+    local max_supported =  GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX) or
                             GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX_ORG)
 
-    local compatiblity_low = GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN) or
+    local min_supported = GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN) or
                                 GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN_ORG)
 
-    if compatiblity then
-		compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= build) or false
+    --print("Min: "..tostring(min_supported).."  Max: "..tostring(max_supported))
+
+    if max_supported then
+		max_supported = tonumber(max_supported) and (tonumber(max_supported) >= build) or false
 	end
 
-    if compatiblity_low then
-        compatiblity_low = tonumber(compatiblity_low) and (tonumber(compatiblity_low) <= build) or false
+    if min_supported then
+        min_supported = tonumber(min_supported) and (tonumber(min_supported) <= build) or false
     end
 
-    return compatiblity, compatiblity_low
+    return max_supported, min_supported
 
 end
 
@@ -276,10 +278,10 @@ function ACP:GetAddonStatus(addon)
 
 	local high, low = self:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
     if (low == false) then
-        return "FF0000", getreason("INTERFACE_VERSION")
+        return "FF0000", getreason("INCOMPATIBLE")
     end
     if (high == false) then
-        return "FF0000", getreason("INCOMPATIBLE")
+        return "FF0000", getreason("INTERFACE_VERSION")
     end
 
 
@@ -1961,11 +1963,11 @@ function ACP:ShowTooltip(this, index)
     local high, low = self:IsAddonCompatibleWithCurrentIntefaceVersion(index)
 
     if low == false then
-		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(false, "No - Game Client Too Old"), 1,0.78,0, 1)
+		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(false, NO), 1,0.78,0, 1)
     elseif high == false then
-		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(false, "No - Addon Outdated"), 1,0.78,0, 1)
+		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(false, NO), 1,0.78,0, 1)
 	elseif high or low then
-		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(true, "Yes"), 1,0.78,0, 1)
+		GameTooltip:AddLine(CLR:Label("Compatible")..": ".. CLR:Bool(true, YES), 1,0.78,0, 1)
 	end
 
 
