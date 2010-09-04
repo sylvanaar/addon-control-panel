@@ -8,9 +8,17 @@ ACP_LINEHEIGHT = 16
 ACP.CheckEvents = 0
 
 
+ACP.TAGS = {
+    PART_OF = "X-Part-Of",
+    INTERFACE_MIN = "X-Min-Inteface",
+    INTERFACE_MIN_ORG = "X-Since-Inteface",
+    INTERFACE_MAX = "X-Max-Inteface",
+    INTERFACE_MAX_ORG = "X-Compatible-With",
+}
+
 -- Handle various annoying special case names
 function ACP:SpecialCaseName(name)
-	local partof = GetAddOnMetadata(name, "X-Part-Of")
+	local partof = GetAddOnMetadata(name, ACP.TAGS.PART_OF)
 
 	if partof ~= nil then
 		return partof.."_"..name
@@ -239,8 +247,11 @@ function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
 		return true -- Get to the choppa!
 	end
 
-    local compatiblity = GetAddOnMetadata(addonnum, "X-Compatible-With")
-    local compatiblity_low = GetAddOnMetadata(addonnum, "X-Since-Interface")
+    local compatiblity =  GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX) or
+                            GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX_ORG)
+
+    local compatiblity_low = GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN) or
+                                GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN_ORG)
 
     if compatiblity then
 		compatiblity = tonumber(compatiblity) and (tonumber(compatiblity) >= build) or false
@@ -605,6 +616,7 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
         local reloadRequired = false
     	for k,v in pairs(savedVar.ProtectedAddons) do
     	    local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(k)
+    	    
     	    if reason == 'MISSING' then
     	    	savedVar.ProtectedAddons[k] = nil
     	    elseif (not enabled) or enabled == 0 then
@@ -1087,6 +1099,21 @@ function ACP:ReloadAddonList()
 
 end
 
+--function ACP:OnKeyDown(this, key)
+--   -- print(this, key)
+--	if ( key == "ESCAPE" ) then
+--		HideUIPanel(ACP_AddonList);
+--	elseif ( key == "PRINTSCREEN" ) then
+--		Screenshot();
+--	elseif ( key == "PAGEUP" ) then
+--		ScrollFrameTemplate_OnMouseWheel(ACP_AddonList_ScrollFrame, 1)
+--	elseif ( key == "PAGEDOWN" ) then
+--		ScrollFrameTemplate_OnMouseWheel(ACP_AddonList_ScrollFrame, -1)
+--	end
+--end
+
+
+
 --
 -- Shift will invert the use of recursion
 -- Ctrl will invert the use of LoD children
@@ -1293,7 +1320,7 @@ function ACP:Security_OnClick(addon)
      self:AddonList_OnShow()
 end
 
-function ACP:ShowSecurityTooltip()
+function ACP:ShowSecurityTooltip(this)
 	GameTooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT")
 
     GameTooltip:AddLine(L["Click to enable protect mode. Protected addons will not be disabled"])
