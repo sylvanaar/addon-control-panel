@@ -235,7 +235,7 @@ end
 local reasons = {}
 
 local function getreason(r)
-	if not reasons[r] then reasons[r] = TEXT(getglobal("ADDON_"..r)) end
+	if not reasons[r] then reasons[r] = _G["ADDON_"..r] end
 	return reasons[r]
 end
 
@@ -527,7 +527,7 @@ function ACP:OnLoad(this)
         else
             popup = this:GetParent()
         end
-		local text = getglobal(popup:GetName().."EditBox"):GetText()
+		local text = _G[popup:GetName().."EditBox"]:GetText()
 		if text == "" then
 			text = nil
 		end
@@ -1110,7 +1110,7 @@ function ACP:ReloadAddonList()
 
 
 	ACP_AddonListSortDropDownText:SetText(builder)
-	local button = getglobal(ACP_FRAME_NAME.."SortDropDown")
+	local button = _G[ACP_FRAME_NAME.."SortDropDown"]
 	UIDropDownMenu_SetSelectedValue( button, builder)
 
 end
@@ -1451,8 +1451,8 @@ function ACP:Collapse_OnClick(obj)
 end
 
 function ACP:CollapseAll_OnClick()
-	local obj = getglobal(ACP_FRAME_NAME.."CollapseAll")
-	local icon = getglobal(ACP_FRAME_NAME.."CollapseAllIcon")
+	local obj = _G[ACP_FRAME_NAME.."CollapseAll"]
+	local icon = _G[ACP_FRAME_NAME.."CollapseAllIcon"]
 	obj.collapsed = toggle(obj.collapsed)
 	if obj.collapsed then
 		icon:SetTexture("Interface\\Minimap\\UI-Minimap-ZoomInButton-Up")
@@ -1534,6 +1534,7 @@ function ACP:AddonList_OnShow(this)
 
 	UpdateAddOnMemoryUsage()
 
+    local obj
 	local origNumAddons = GetNumAddOns()
 	numAddons = #sortedAddonList
 	FauxScrollFrame_Update(ACP_AddonList_ScrollFrame, numAddons, ACP_MAXADDONS, ACP_LINEHEIGHT, nil, nil, nil)
@@ -1541,7 +1542,7 @@ function ACP:AddonList_OnShow(this)
 	local offset = FauxScrollFrame_GetOffset(ACP_AddonList_ScrollFrame)
 	local curr_category = ""
 	for i = 1, ACP_MAXADDONS, 1 do
-		obj = getglobal("ACP_AddonListEntry"..i)
+		obj = _G["ACP_AddonListEntry"..i]
 		local addonIdx = sortedAddonList[offset+i]
 
    --     if not curr_category then
@@ -1551,15 +1552,15 @@ function ACP:AddonList_OnShow(this)
 			obj:Hide()
 			obj.addon = nil
 		else
-			local headerText = getglobal("ACP_AddonListEntry"..i.."Header")
-			local titleText = getglobal("ACP_AddonListEntry"..i.."Title")
-			local status = getglobal("ACP_AddonListEntry"..i.."Status")
-			local checkbox = getglobal("ACP_AddonListEntry"..i.."Enabled")
-			local securityButton = getglobal("ACP_AddonListEntry"..i.."Security")
-			local securityIcon = getglobal("ACP_AddonListEntry"..i.."SecurityIcon")
-			local loadnow = getglobal("ACP_AddonListEntry"..i.."LoadNow")
-			local collapse = getglobal("ACP_AddonListEntry"..i.."Collapse")
-			local collapseIcon = getglobal("ACP_AddonListEntry"..i.."CollapseIcon")
+			local headerText = _G["ACP_AddonListEntry"..i.."Header"]
+			local titleText = _G["ACP_AddonListEntry"..i.."Title"]
+			local status = _G["ACP_AddonListEntry"..i.."Status"]
+			local checkbox = _G["ACP_AddonListEntry"..i.."Enabled"]
+			local securityButton = _G["ACP_AddonListEntry"..i.."Security"]
+			local securityIcon = _G["ACP_AddonListEntry"..i.."SecurityIcon"]
+			local loadnow = _G["ACP_AddonListEntry"..i.."LoadNow"]
+			local collapse = _G["ACP_AddonListEntry"..i.."Collapse"]
+			local collapseIcon = _G["ACP_AddonListEntry"..i.."CollapseIcon"]
 
 
 			if type(addonIdx) == 'string' and not GetAddonIndex(addonIdx, true) then
@@ -1708,7 +1709,7 @@ function ACP:AddonList_OnShow(this)
 
 --[[
 				if (reason) then
-					status:SetText(TEXT(getglobal("ADDON_"..reason)))
+					status:SetText(TEXT(_G["ADDON_"..reason)))
 				elseif (loaded) then
 					status:SetText(L["Loaded"])
 				elseif (ondemand) then
