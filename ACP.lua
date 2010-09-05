@@ -1790,7 +1790,7 @@ function ACP:SetDropDown_Populate(level)
 		UIDropDownMenu_AddButton(info)
 
 	elseif level == 2 then
-
+        local info
 		local setName = self:GetSetName(UIDROPDOWNMENU_MENU_VALUE)
 		info = UIDropDownMenu_CreateInfo()
 		info.text = setName
