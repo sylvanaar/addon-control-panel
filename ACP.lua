@@ -267,6 +267,20 @@ function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
 
 end
 
+function ACP:GetAddonCompatibilitySummary(addon)
+    local high, low = self:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
+
+    if low == false then
+		return false
+    elseif high == false then
+		return false
+	elseif high or low then
+		return true
+	end
+
+    return nil -- Compatibility not specified
+end
+
 function ACP:GetAddonStatus(addon)
 	local addon = addon
 
@@ -1674,14 +1688,23 @@ function ACP:AddonList_OnShow(this)
     					securityButton:Show()
     					checkbox:Hide()
                 else
-    				if (security == "SECURE") then
-    					setSecurity(securityIcon,1)
-    				elseif (security == "INSECURE") then
-    					setSecurity(securityIcon,2)
-    				elseif (security == "BANNED") then -- wtf?
-    					setSecurity(securityIcon,3)
-    				end
-    		    end
+--    				if (security == "SECURE") then
+--    					setSecurity(securityIcon,1)
+--    				elseif (security == "INSECURE") then
+--    					setSecurity(securityIcon,2)
+--    				elseif (security == "BANNED") then -- wtf?
+--    					setSecurity(securityIcon,3)
+--    				end
+
+                    local compat = self:GetAddonCompatibilitySummary(addonIdx)
+
+                    if compat ~= nil then
+                        setSecurity(securityIcon,1)
+                    else
+                        setSecurity(securityIcon,2)
+                    end
+
+                end
 
 --[[
 				if (reason) then
