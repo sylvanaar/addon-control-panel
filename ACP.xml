@@ -157,8 +157,11 @@
             <OnShow>
             GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()+25);
             
-            self:SetPoint(GameMenuButtonMacros:GetPoint(1))
-            
+            local point, relativeTo, relativePoint, x, y= GameMenuButtonMacros:GetPoint(1);
+			if (relativeTo and relativeTo ~= self ) then
+				self:SetPoint( point, relativeTo, relativePoint, x, y)
+			end            
+                        
             GameMenuButtonMacros:ClearAllPoints()
             GameMenuButtonMacros:SetPoint("TOP",self,"BOTTOM",0,-1);
         </OnShow>
