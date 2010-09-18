@@ -156,9 +156,10 @@
             </OnLoad>-->
             <OnShow>
             GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()+25);
-            if (GameMenuButtonKeybindings:IsShown()) then
-                self:SetPoint("TOP", GameMenuButtonKeybindings, "BOTTOM", 0, -1);
-            end;
+            
+            self:SetPoint(GameMenuButtonMacros:GetPoint(1))
+            
+            GameMenuButtonMacros:ClearAllPoints()
             GameMenuButtonMacros:SetPoint("TOP",self,"BOTTOM",0,-1);
         </OnShow>
             <OnHide>
