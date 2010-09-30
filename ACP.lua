@@ -104,7 +104,7 @@ end
 local L = setmetatable({}, {
     __index = function(t, k)
         error("Locale key " .. tostring(k) .. " is not provided.")
-        end
+    end
 })
 
 --==============
@@ -343,7 +343,9 @@ local collapsedAddons
 --==============
 -- Local Variables
 --==============
-local cache = setmetatable({}, {__mode = 'k'})
+local cache = setmetatable({}, {
+    __mode = 'k'
+})
 local function acquire()
     local t = next(cache) or {}
     cache[t] = nil
@@ -418,7 +420,7 @@ local function GetAddonIndex(addon, noerr)
             return addonIndex + GetNumAddOns()
         else
             if addon == "" then return nil end
-            for i = 1, GetNumAddOns() do
+            for i=1,GetNumAddOns() do
                 local name = ACP:SpecialCaseName(GetAddOnInfo(i))
                 if name:lower() == ACP:SpecialCaseName(addon):lower() then
                     return i
@@ -455,7 +457,7 @@ function ACP:OnLoad(this)
 
     GameMenuButtonAddOns:SetText(L["AddOns"])
 
-    for i = 1, ACP_MAXADDONS do
+    for i=1,ACP_MAXADDONS do
         local button = _G[ACP_FRAME_NAME .. "Entry" .. i .. "LoadNow"]
         button:SetText(L["Load"])
     end
@@ -466,29 +468,31 @@ function ACP:OnLoad(this)
     _G[ACP_FRAME_NAME .. "_ReloadUI"]:SetText(L["ReloadUI"])
     _G[ACP_FRAME_NAME .. "BottomClose"]:SetText(L["Close"])
 
-    UIPanelWindows[ACP_FRAME_NAME] = {area = "center", pushable = 0, whileDead = 1}
+    UIPanelWindows[ACP_FRAME_NAME] = {
+        area = "center", pushable = 0, whileDead = 1
+    }
     StaticPopupDialogs["ACP_RELOADUI"] = {
         text = L["Reload your User Interface?"],
         button1 = TEXT(ACCEPT),
         button2 = TEXT(CANCEL),
         OnAccept = function()
             ReloadUI()
-            end,
+        end,
         OnCancel = function(data, reason)
             if (reason == "timeout") then
                 ReloadUI()
             else
                 StaticPopupDialogs["ACP_RELOADUI"].reloadAccepted = false
             end
-            end,
+        end,
         OnHide = function()
             if (StaticPopupDialogs["ACP_RELOADUI"].reloadAccepted) then
                 ReloadUI();
             end
-            end,
+        end,
         OnShow = function()
             StaticPopupDialogs["ACP_RELOADUI"].reloadAccepted = true;
-            end,
+        end,
         timeout = 5,
         hideOnEscape = 1,
         exclusive = 1,
@@ -501,12 +505,12 @@ function ACP:OnLoad(this)
         button2 = TEXT(CANCEL),
         OnAccept = function()
             ReloadUI()
-            end,
+        end,
         OnCancel = function(data, reason)
             if (reason == "timeout") then
                 ReloadUI()
             end
-            end,
+        end,
 
         timeout = 5,
         hideOnEscape = 1,
@@ -521,7 +525,7 @@ function ACP:OnLoad(this)
         OnAccept = function()
             self:SaveSet(self.savingSet)
             CloseDropDownMenus(1)
-            end,
+        end,
         timeout = 0,
         hideOnEscape = 1,
         whileDead = 1,
@@ -551,7 +555,7 @@ function ACP:OnLoad(this)
         EditBoxOnEnterPressed = OnRenameSet,
         EditBoxOnEscapePressed = function(this)
             this:GetParent():Hide()
-            end,
+        end,
         timeout = 0,
         hideOnEscape = 1,
         exclusive = 1,
@@ -559,7 +563,7 @@ function ACP:OnLoad(this)
         hasEditBox = 1,
     }
 
-    for i, v in ipairs(ACP_BLIZZARD_ADDONS) do
+    for i,v in ipairs(ACP_BLIZZARD_ADDONS) do
         ACP_BLIZZARD_ADDONS[v] = i
     end
     --	ACP_BLIZZARD_ADDONS = setmetatable(ACP_BLIZZARD_ADDONS, {
@@ -599,7 +603,9 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
 
         savedVar = ACP_Data
 
-        savedVar.ProtectedAddons = savedVar.ProtectedAddons or {["ACP"] = true}
+        savedVar.ProtectedAddons = savedVar.ProtectedAddons or {
+            ["ACP"] = true
+        }
 
         if not savedVar.collapsed then
             savedVar.collapsed = {}
@@ -616,7 +622,7 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
             savedVar.NoChildren = true
         end
 
-        for i = 1, GetNumAddOns() do
+        for i=1,GetNumAddOns() do
             if IsAddOnLoaded(i) then
                 local name = GetAddOnInfo(i)
                 if name ~= ACP_ADDON_NAME then
@@ -632,13 +638,13 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
         this:UnregisterEvent("VARIABLES_LOADED")
     elseif event == "PLAYER_ALIVE" then
 
-        for k, v in pairs(savedVar.ProtectedAddons) do
+        for k,v in pairs(savedVar.ProtectedAddons) do
             if type(k) == "number" then savedVar.ProtectedAddons[k] = nil end
             if not v then savedVar.ProtectedAddons[k] = nil end
         end
 
         local reloadRequired = false
-        for k, v in pairs(savedVar.ProtectedAddons) do
+        for k,v in pairs(savedVar.ProtectedAddons) do
             local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(k)
 
             if reason == 'MISSING' then
@@ -677,7 +683,7 @@ end
 
 function ACP:ResolveLibraryName(id)
     local a, name
-    for a = 1, GetNumAddOns() do
+    for a=1,GetNumAddOns() do
         local n = GetAddOnInfo(a)
         if n == id then
             name = n
@@ -755,13 +761,13 @@ addonListBuilders[DEFAULT] = function()
         masterAddonList[k] = nil
     end
     local numAddons = GetNumAddOns()
-    for i = 1, numAddons do
+    for i=1,numAddons do
         table.insert(masterAddonList, i)
     end
-    for i = 1, NUM_BLIZZARD_ADDONS do
+    for i=1,NUM_BLIZZARD_ADDONS do
         table.insert(masterAddonList, numAddons + i)
     end
-    end
+end
 
 addonListBuilders[TITLES] = function()
     for k in pairs(masterAddonList) do
@@ -769,7 +775,7 @@ addonListBuilders[TITLES] = function()
     end
 
     local numAddons = GetNumAddOns()
-    for i = 1, numAddons do
+    for i=1,numAddons do
         table.insert(masterAddonList, i)
     end
 
@@ -778,19 +784,19 @@ addonListBuilders[TITLES] = function()
         local _, nameA = GetAddOnInfo(a)
         local _, nameB = GetAddOnInfo(b)
         return formattitle(nameA) < formattitle(nameB)
-        end)
+    end)
 
-    for i = 1, NUM_BLIZZARD_ADDONS do
+    for i=1,NUM_BLIZZARD_ADDONS do
         table.insert(masterAddonList, numAddons + i)
     end
-    end
+end
 
 addonListBuilders[ACE2] = function()
 
     local t = {}
 
     local numAddons = GetNumAddOns()
-    for i = 1, numAddons do
+    for i=1,numAddons do
         table.insert(t, i)
     end
 
@@ -805,11 +811,11 @@ addonListBuilders[ACE2] = function()
         else
             return tostring(catA) < tostring(catB)
         end
-        end)
+    end)
 
     -- Insert the category titles into the list.
     local prevCategory = ""
-    for i, addonIndex in ipairs(t) do
+    for i,addonIndex in ipairs(t) do
         local category = GetAddOnMetadata(addonIndex, "X-Category")
         if not category then
             category = "Undefined"
@@ -822,7 +828,7 @@ addonListBuilders[ACE2] = function()
 
     table.insert(t, "Blizzard")
 
-    for i = 1, NUM_BLIZZARD_ADDONS do
+    for i=1,NUM_BLIZZARD_ADDONS do
         table.insert(t, numAddons + i)
     end
 
@@ -832,7 +838,7 @@ addonListBuilders[ACE2] = function()
     end
     local list = masterAddonList
     local currPos = list
-    for i, addon in ipairs(t) do
+    for i,addon in ipairs(t) do
         if type(addon) == 'string' then
             local t = {}
             t.category = addon
@@ -844,14 +850,14 @@ addonListBuilders[ACE2] = function()
     end
 
 
-    end
+end
 
 
 addonListBuilders[AUTHOR] = function()
     local t = {}
 
     local numAddons = GetNumAddOns()
-    for i = 1, numAddons do
+    for i=1,numAddons do
         table.insert(t, i)
     end
 
@@ -866,11 +872,11 @@ addonListBuilders[AUTHOR] = function()
         else
             return tostring(catA) < tostring(catB)
         end
-        end)
+    end)
 
     -- Insert the category titles into the list.
     local prevCategory = ""
-    for i, addonIndex in ipairs(t) do
+    for i,addonIndex in ipairs(t) do
         local category = GetAddOnMetadata(addonIndex, "Author")
         if not category then
             category = "Unknown"
@@ -883,7 +889,7 @@ addonListBuilders[AUTHOR] = function()
 
     table.insert(t, "Blizzard")
 
-    for i = 1, NUM_BLIZZARD_ADDONS do
+    for i=1,NUM_BLIZZARD_ADDONS do
         table.insert(t, numAddons + i)
     end
 
@@ -893,7 +899,7 @@ addonListBuilders[AUTHOR] = function()
     end
     local list = masterAddonList
     local currPos = list
-    for i, addon in ipairs(t) do
+    for i,addon in ipairs(t) do
         if type(addon) == 'string' then
             local t = {}
             t.category = addon
@@ -904,7 +910,7 @@ addonListBuilders[AUTHOR] = function()
         end
     end
 
-    end
+end
 
 
 --[[
@@ -952,7 +958,7 @@ addonListBuilders[SEPARATE_LOD_LIST] = function()
     blizz.category = "Blizzard Addons"
 
     local pos = 1
-    for i = 1, numAddons do
+    for i=1,numAddons do
         name = GetAddOnInfo(i)
         if not IsAddOnLoadOnDemand(name) then
             table.insert(nonlods, i)
@@ -961,14 +967,14 @@ addonListBuilders[SEPARATE_LOD_LIST] = function()
         end
     end
 
-    for i = 1, NUM_BLIZZARD_ADDONS do
+    for i=1,NUM_BLIZZARD_ADDONS do
         table.insert(blizz, numAddons + i)
     end
 
     table.insert(masterAddonList, nonlods)
     table.insert(masterAddonList, lods)
     table.insert(masterAddonList, blizz)
-    end
+end
 
 
 
@@ -976,7 +982,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     local t = {}
 
     local numAddons = GetNumAddOns()
-    for i = 1, numAddons do
+    for i=1,numAddons do
         table.insert(t, i)
     end
 
@@ -1009,7 +1015,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
         else
             return tostring(catA):lower() < tostring(catB):lower()
         end
-        end)
+    end)
 
 
 
@@ -1018,7 +1024,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     local name = nil
     local t2 = t
     t = {}
-    for i, addonIndex in ipairs(t2) do
+    for i,addonIndex in ipairs(t2) do
         name = ACP:SpecialCaseName(GetAddOnInfo(addonIndex))
 
         local acecategory = GetAddOnMetadata(addonIndex, "X-Category")
@@ -1045,7 +1051,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     local blizz = {}
     blizz.category = "Blizzard Addons"
 
-    for i = 1, NUM_BLIZZARD_ADDONS do
+    for i=1,NUM_BLIZZARD_ADDONS do
         table.insert(blizz, numAddons + i)
     end
 
@@ -1055,7 +1061,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
     end
     local list = masterAddonList
     local currPos = list
-    for i, addon in ipairs(t) do
+    for i,addon in ipairs(t) do
         if type(addon) == 'string' then
             if addon == "" then
                 currPos = list
@@ -1080,7 +1086,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 
     table.insert(masterAddonList, libs)
     table.insert(masterAddonList, blizz)
-    end
+end
 
 
 function ACP:ToggleUI()
@@ -1161,7 +1167,7 @@ function ACP:ReadDependencies(t, ...)
     for k in pairs(t) do
         t[k] = nil
     end
-    for i = 1, select('#', ...) do
+    for i=1,select('#', ...) do
         local name = select(i, ...)
         if name then
             t[name] = true
@@ -1184,7 +1190,7 @@ function ACP:EnableDependencies(addon)
 end
 
 function ACP:FindAddon(list, name)
-    for i, v in ipairs(list) do
+    for i,v in ipairs(list) do
         if v == name then
             return true
         end
@@ -1193,7 +1199,7 @@ function ACP:FindAddon(list, name)
 end
 
 function ACP:FindAddonKey(list, name)
-    for k, v in pairs(list) do
+    for k,v in pairs(list) do
         if k == name then
             return true
         end
@@ -1209,14 +1215,14 @@ end
 function ACP:CollapseAll(collapse)
     local categories = {}
 
-    for i, addon in ipairs(masterAddonList) do
+    for i,addon in ipairs(masterAddonList) do
         if type(addon) == 'table' and addon.category then
             table.insert(categories, addon.category)
         end
     end
 
 
-    for i, category in ipairs(categories) do
+    for i,category in ipairs(categories) do
         collapsedAddons[category] = collapse
     end
 
@@ -1242,7 +1248,7 @@ function ACP:SaveSet(set)
     addonSet.name = setName
 
     local name, enabled
-    for i = 1, GetNumAddOns() do
+    for i=1,GetNumAddOns() do
         name, _, _, enabled = GetAddOnInfo(i)
         if enabled and name ~= ACP_ADDON_NAME then
             table.insert(addonSet, name)
@@ -1277,7 +1283,7 @@ function ACP:UnloadSet(set)
     end
 
     local name
-    for i = 1, GetNumAddOns() do
+    for i=1,GetNumAddOns() do
         name = GetAddOnInfo(i)
         if name ~= ACP_ADDON_NAME and ACP:FindAddon(list, name) and not ACP:IsAddOnProtected(name) then
             DisableAddOn(name)
@@ -1306,7 +1312,7 @@ function ACP:LoadSet(set)
 
     enabledList = acquire()
     local name
-    for i = 1, GetNumAddOns() do
+    for i=1,GetNumAddOns() do
         name = GetAddOnInfo(i)
         if ACP:FindAddon(list, name) then
             self:EnableAddon(name)
@@ -1331,7 +1337,9 @@ end
 function ACP:Security_OnClick(addon)
     local addon = GetAddOnInfo(addon)
     if addon then
-        savedVar.ProtectedAddons = savedVar.ProtectedAddons or {["ACP"] = true}
+        savedVar.ProtectedAddons = savedVar.ProtectedAddons or {
+            ["ACP"] = true
+        }
         local prot = savedVar.ProtectedAddons[addon]
         if prot then
             savedVar.ProtectedAddons[addon] = nil
@@ -1373,14 +1381,14 @@ function ACP:RebuildSortedAddonList()
         sortedAddonList[k] = nil
     end
 
-    for i, addon in ipairs(masterAddonList) do
+    for i,addon in ipairs(masterAddonList) do
         if type(addon) == 'table' then
             local category = addon.category
             if category then
                 table.insert(sortedAddonList, category)
             end
             if not category or not collapsedAddons[category] then
-                for j, subAddon in ipairs(addon) do
+                for j,subAddon in ipairs(addon) do
                     table.insert(sortedAddonList, subAddon)
                 end
             end
@@ -1404,7 +1412,7 @@ function ACP:SetMasterAddonBuilder(sorter)
 end
 
 function ACP:UpdateLocale(loc)
-    for k, v in pairs(loc) do
+    for k,v in pairs(loc) do
         if v == true then
             L[k] = k
         else
@@ -1424,7 +1432,7 @@ end
 
 function ACP:SortDropDown_Populate()
     local info
-    for name, func in pairs(addonListBuilders) do
+    for name,func in pairs(addonListBuilders) do
         info = UIDropDownMenu_CreateInfo()
         info.text = name
         info.func = function() self:SetMasterAddonBuilder(name) end
@@ -1472,7 +1480,7 @@ function ACP:CollapseAll_OnClick()
 end
 
 function ACP:GetAddonCategory(addon)
-    for i, a in ipairs(masterAddonList) do
+    for i,a in ipairs(masterAddonList) do
         if type(a) == 'table' then
             if self:FindAddon(a, addon) then
                 return a.category
@@ -1486,7 +1494,7 @@ function ACP:GetAddonCategory(addon)
 end
 
 function ACP:GetAddonCategoryTable(addon)
-    for i, a in ipairs(masterAddonList) do
+    for i,a in ipairs(masterAddonList) do
         if type(a) == 'table' then
             if a.category == addon then
                 return a
@@ -1514,7 +1522,7 @@ function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
         if category and collapsedAddons[category] then
             self:Print(CLR:Addon(category) .. " is collapsed. Setting all its addons " .. CLR:Bool(enabled, (enabled and "ENABLED" or "DISABLED")))
             local t = self:GetAddonCategoryTable(category)
-            for k, v in pairs(t) do
+            for k,v in pairs(t) do
                 if enabled then
                     self:EnableAddon(v, shift, ctrl)
                 else
@@ -1549,7 +1557,7 @@ function ACP:AddonList_OnShow(this)
     local i
     local offset = FauxScrollFrame_GetOffset(ACP_AddonList_ScrollFrame)
     local curr_category = ""
-    for i = 1, ACP_MAXADDONS, 1 do
+    for i=1,ACP_MAXADDONS,1 do
         obj = _G["ACP_AddonListEntry" .. i]
         local addonIdx = sortedAddonList[offset + i]
 
@@ -1757,7 +1765,7 @@ function ACP:SetDropDown_Populate(level)
     if level == 1 then
 
         local info, count, name
-        for i = 1, ACP_SET_SIZE do
+        for i=1,ACP_SET_SIZE do
             local name = nil
 
             info = UIDropDownMenu_CreateInfo()
@@ -1814,7 +1822,7 @@ function ACP:SetDropDown_Populate(level)
             info.func = function()
                 self.savingSet = UIDROPDOWNMENU_MENU_VALUE
                 StaticPopup_Show("ACP_SAVESET", setName)
-                end
+            end
             info.notCheckable = 1
             UIDropDownMenu_AddButton(info, level)
         end
@@ -1846,7 +1854,7 @@ function ACP:SetDropDown_Populate(level)
                 self.renamingSet = UIDROPDOWNMENU_MENU_VALUE
                 StaticPopup_Show("ACP_RENAMESET", setName)
                 CloseDropDownMenus(1)
-                end
+            end
             info.notCheckable = 1
             UIDropDownMenu_AddButton(info, level)
         end
@@ -1876,7 +1884,7 @@ do
             name = "???"
         end
 
-        for k, v in pairs(ACP.embedded_libs_owners) do
+        for k,v in pairs(ACP.embedded_libs_owners) do
             if type(v) == "boolean" then
                 ACP.embedded_libs_owners[k] = name
             end
@@ -1888,7 +1896,7 @@ do
     function ACP:LocateEmbeds()
         local embeds = LibStub.libs
 
-        for k, v in pairs(embeds) do
+        for k,v in pairs(embeds) do
             if self.embedded_libs[k] ~= v then
                 self.embedded_libs[k] = v
                 self.embedded_libs_owners[k] = true
@@ -1907,7 +1915,9 @@ function ACP:ShowTooltip(this, index)
     local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(index)
     local author = GetAddOnMetadata(name, "Author")
     local version = ParseVersion(GetAddOnMetadata(name, "Version"))
-    local deps = {GetAddOnDependencies(index)}
+    local deps = {
+        GetAddOnDependencies(index)
+    }
 
     GameTooltip:SetOwner(this, "ANCHOR_BOTTOMLEFT")
     if title then
@@ -1938,7 +1948,7 @@ function ACP:ShowTooltip(this, index)
     local dep = deps[1]
     if dep then
         depLine = CLR:Label(L["Dependencies"]) .. ": " .. CLR:AddonStatus(dep, dep)
-        for i = 2, #deps do
+        for i=2,#deps do
             dep = deps[i]
             if dep and dep:len() > 0 then
                 depLine = depLine .. ", " .. CLR:AddonStatus(dep, dep)
@@ -1949,12 +1959,14 @@ function ACP:ShowTooltip(this, index)
 
     local metaXEmbeds = GetAddOnMetadata(name, "X-Embeds")
     if metaXEmbeds ~= nil then
-        local deps = {strsplit(" ,", metaXEmbeds:trim())}
+        local deps = {
+            strsplit(" ,", metaXEmbeds:trim())
+        }
 
         local dep = deps[1]
         if dep then
             depLine = CLR:Label(L["Embeds"]) .. ": " .. CLR:AddonStatus(dep, dep)
-            for i = 2, #deps do
+            for i=2,#deps do
                 dep = deps[i]
                 if dep and dep:len() > 0 then
                     depLine = depLine .. ", " .. CLR:AddonStatus(dep, dep)
@@ -1965,7 +1977,7 @@ function ACP:ShowTooltip(this, index)
     end
 
     local actives = nil
-    for k, v in pairs(self.embedded_libs_owners) do
+    for k,v in pairs(self.embedded_libs_owners) do
         if v == name then
             if actives == nil then
                 actives = CLR:Label(L["Active Embeds"]) .. ": " .. CLR:ActiveEmbed(k)
@@ -2018,7 +2030,7 @@ end
 
 local function build_string(...)
     local s
-    for i = 1, select("#", ...) do
+    for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 then
             s = s and (s .. ", " .. x) or x
@@ -2028,7 +2040,7 @@ local function build_string(...)
 end
 
 local function find_iterate_over(name, ...)
-    for i = 1, select("#", ...) do
+    for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 and x == name then
             return true
@@ -2038,7 +2050,7 @@ local function find_iterate_over(name, ...)
 end
 
 local function iterate_over(...)
-    for i = 1, select("#", ...) do
+    for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 then
             EnableAddOn(x)
@@ -2047,7 +2059,7 @@ local function iterate_over(...)
 end
 
 local function recursive_iterate_over(...)
-    for i = 1, select("#", ...) do
+    for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 then
             ACP_EnableRecurse(x, true)
@@ -2063,7 +2075,7 @@ local function enable_lod_dependants(addon)
         return
     end
 
-    for i = 1, GetNumAddOns() do
+    for i=1,GetNumAddOns() do
         local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(i)
         local isdep = find_iterate_over(addon_name, GetAddOnDependencies(name))
         local ondemand = IsAddOnLoadOnDemand(name)
