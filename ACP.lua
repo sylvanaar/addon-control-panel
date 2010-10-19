@@ -360,7 +360,7 @@ end
 local ACP_ADDON_NAME = "ACP"
 local ACP_FRAME_NAME = "ACP_AddonList"
 local playerClass = nil
-local ACP_SET_SIZE = 10
+local ACP_SET_SIZE = 25
 local ACP_MAXADDONS = 20
 local ACP_DefaultSet = {}
 local ACP_DEFAULT_SET = 0
