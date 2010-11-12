@@ -3,7 +3,7 @@
 ## X-Since-Interface: 30300
 
 ## Title: Addon Control Panel
-## Author: sylvanaar, Rophy, Saien
+## Author: Sylvanaar (Sylvaan - Zul'Jin/US-Horde)
 ## Notes: Adds an addon manager in game via the 'Addons' menu. Special support for multi-part addons. Based on rMCP by Rophy.
 ## Notes-ruRU: Добавляет менеджер модификаций а игру посредством пункта меню 'Модификации'. Специальная поддержка модификаций состоящих из нескольких частей. Основан на rMCP от Rophy.
 ## Notes-zhTW: 在系統選單按「插件管理」按鈕管理插件。ACP 以 rMCP (MCP，由Rophy修改) 為基礎。
