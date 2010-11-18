@@ -747,6 +747,10 @@ local ACP_ADD_SET_D = "addset"
 local ACP_REM_SET_D = "removeset"
 local ACP_DISABLEALL = "disableall"
 
+local ACP_RESTOREDEFAULT = "default"
+
+local ACP_COMMANDS = { ACP_NOCHILDREN, ACP_NORECURSE, ACP_ADD_SET_D, ACP_REM_SET_D, ACP_DISABLEALL, ACP_RESTOREDEFAULT }
+
 function ACP.SlashHandler(msg)
     if type(msg) == "string" then
         if msg == ACP_NOCHILDREN then
@@ -762,8 +766,7 @@ function ACP.SlashHandler(msg)
         end
 
         if msg == ACP_DISABLEALL then
-            ACP:DisableAll_OnClick()
-            ACP:Print("Disabling all addons (except protected)")
+            ACP:DisableAllAddons()
             return
         end
 
@@ -773,10 +776,8 @@ function ACP.SlashHandler(msg)
 
             if type(set) == "number" then
                 ACP:LoadSet(set)
-                ACP:Print(("Adding set %d"):format(set))
+                return
             end
-
-            return
         end
 
         if msg == ACP_REM_SET_D then
@@ -785,14 +786,26 @@ function ACP.SlashHandler(msg)
 
             if type(set) == "number" then
                 ACP:UnloadSet(set)
-                ACP:Print(("Removing set %d"):format(set))
+                return
             end
+        end
+
+        if msg == ACP_RESTOREDEFAULT then
+            ACP:DisableAll_OnClick()
+            ACP:LoadSet(0)
             return
         end
+
+        ACP:ShowSlashCommands()
     end
 
     ShowUIPanel(ACP_AddonList)
 end
+
+function ACP:ShowSlashCommands()
+    ACP:Print("Valid commands: " .. string.concat(ACP_COMMANDS, ", "))
+end
+
 
 addonListBuilders[DEFAULT] = function()
     for k in pairs(masterAddonList) do
@@ -1482,13 +1495,18 @@ function ACP:SortDropDown_OnClick(sorter)
 
 end
 
-function ACP:DisableAll_OnClick()
+function ACP:DisableAllAddons()
     DisableAllAddOns()
     EnableAddOn(ACP_ADDON_NAME)
 
     for k in pairs(savedVar.ProtectedAddons) do
         EnableAddOn(k)
     end
+    ACP:Print("Disabled all addons (except ACP & protected)")
+end
+
+function ACP:DisableAll_OnClick()
+    self:DisableAllAddons()
     self:AddonList_OnShow()
 end
 
