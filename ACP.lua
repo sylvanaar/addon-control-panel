@@ -256,10 +256,10 @@ function ACP:IsAddonCompatibleWithCurrentIntefaceVersion(addon)
     end
 
     local max_supported = GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX) or
-    GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX_ORG)
+        GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MAX_ORG)
 
     local min_supported = GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN) or
-    GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN_ORG)
+        GetAddOnMetadata(addonnum, ACP.TAGS.INTERFACE_MIN_ORG)
 
     --print("Min: "..tostring(min_supported).."  Max: "..tostring(max_supported))
 
@@ -351,12 +351,14 @@ local function acquire()
     cache[t] = nil
     return t
 end
+
 local function reclaim(t)
     for k in pairs(t) do
         t[k] = nil
     end
     cache[t] = true
 end
+
 local ACP_ADDON_NAME = "ACP"
 local ACP_FRAME_NAME = "ACP_AddonList"
 local playerClass = nil
@@ -469,7 +471,9 @@ function ACP:OnLoad(this)
     _G[ACP_FRAME_NAME .. "BottomClose"]:SetText(L["Close"])
 
     UIPanelWindows[ACP_FRAME_NAME] = {
-        area = "center", pushable = 0, whileDead = 1
+        area = "center",
+        pushable = 0,
+        whileDead = 1
     }
     StaticPopupDialogs["ACP_RELOADUI"] = {
         text = L["Reload your User Interface?"],
@@ -511,7 +515,6 @@ function ACP:OnLoad(this)
                 ReloadUI()
             end
         end,
-
         timeout = 5,
         hideOnEscape = 1,
         exclusive = 1,
@@ -735,8 +738,14 @@ end
 
 --ACP_Data.NoRecurse
 --ACP_Data.NoChildren
+--ACP_Data.NoRecurse
+--ACP_Data.NoChildren
 local ACP_NOCHILDREN = "nochildren"
 local ACP_NORECURSE = "norecurse"
+
+local ACP_ADD_SET_D = "addset"
+local ACP_REM_SET_D = "removeset"
+local ACP_DISABLEALL = "disableall"
 
 function ACP.SlashHandler(msg)
     if type(msg) == "string" then
@@ -749,6 +758,35 @@ function ACP.SlashHandler(msg)
         if msg == ACP_NORECURSE then
             savedVar.NoRecurse = not savedVar.NoRecurse
             ACP:Print(L["Recursive Enable is now %s"]:format(CLR:Bool(not savedVar.NoRecurse, tostring(not savedVar.NoRecurse))))
+            return
+        end
+
+        if msg == ACP_DISABLEALL then
+            ACP:DisableAll_OnClick()
+            ACP:Print("Disabling all addons (except protected)")
+            return
+        end
+
+        if msg == ACP_ADD_SET_D then
+            set = msg:sub(ACP_ADD_SET_D:len(), -1):match("%d")
+            set = tonumber(set)
+
+            if type(set) == "number" then
+                ACP:LoadSet(set)
+                ACP:Print(("Adding set %d"):format(set))
+            end
+
+            return
+        end
+
+        if msg == ACP_REM_SET_D then
+            set = msg:sub(ACP_REM_SET_D:len(), -1):match("%d")
+            set = tonumber(set)
+
+            if type(set) == "number" then
+                ACP:UnloadSet(set)
+                ACP:Print(("Removing set %d"):format(set))
+            end
             return
         end
     end
@@ -1700,7 +1738,7 @@ function ACP:AddonList_OnShow(this)
                 end
 
                 if addonIdx < origNumAddons and
-                savedVar.ProtectedAddons[name] then
+                    savedVar.ProtectedAddons[name] then
                     setSecurity(securityIcon, 4)
                     securityButton:Show()
                     checkbox:Hide()
@@ -2102,7 +2140,7 @@ function ACP_EnableRecurse(name, skip_children)
     end
 
     if (type(name) == "string" and strlen(name) > 0) or
-    (type(name) == "number" and name > 0) then
+        (type(name) == "number" and name > 0) then
 
         EnableAddOn(name)
 
