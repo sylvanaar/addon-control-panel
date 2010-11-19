@@ -770,7 +770,7 @@ function ACP.SlashHandler(msg)
             return
         end
 
-        if msg == ACP_ADD_SET_D then
+        if msg:find("^"..ACP_ADD_SET_D) then
             set = msg:sub(ACP_ADD_SET_D:len(), -1):match("%d")
             set = tonumber(set)
 
@@ -780,7 +780,7 @@ function ACP.SlashHandler(msg)
             end
         end
 
-        if msg == ACP_REM_SET_D then
+        if msg:find("^"..ACP_REM_SET_D) then
             set = msg:sub(ACP_REM_SET_D:len(), -1):match("%d")
             set = tonumber(set)
 
@@ -803,7 +803,7 @@ function ACP.SlashHandler(msg)
 end
 
 function ACP:ShowSlashCommands()
-    ACP:Print("Valid commands: " .. string.concat(ACP_COMMANDS, ", "))
+    ACP:Print("Valid commands: " .. table.concat(ACP_COMMANDS, ", "))
 end
 
 
@@ -1503,11 +1503,15 @@ function ACP:DisableAllAddons()
         EnableAddOn(k)
     end
     ACP:Print("Disabled all addons (except ACP & protected)")
+    
+    if _G[ACP_FRAME_NAME]:IsShown() then
+        self:AddonList_OnShow()
+    end
 end
 
 function ACP:DisableAll_OnClick()
     self:DisableAllAddons()
-    self:AddonList_OnShow()
+
 end
 
 function ACP:Collapse_OnClick(obj)
