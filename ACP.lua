@@ -752,7 +752,7 @@ local ACP_RESTOREDEFAULT = "default"
 local ACP_COMMANDS = { ACP_NOCHILDREN, ACP_NORECURSE, ACP_ADD_SET_D, ACP_REM_SET_D, ACP_DISABLEALL, ACP_RESTOREDEFAULT }
 
 function ACP.SlashHandler(msg)
-    if type(msg) == "string" then
+    if type(msg) == "string" and msg:len() > 0 then
         if msg == ACP_NOCHILDREN then
             savedVar.NoChildren = not savedVar.NoChildren
             ACP:Print(L["LoD Child Enable is now %s"]:format(CLR:Bool(not savedVar.NoChildren, tostring(not savedVar.NoChildren))))
