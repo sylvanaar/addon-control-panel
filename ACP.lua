@@ -457,6 +457,9 @@ function ACP:OnLoad(this)
     self.L = L
     self.frame = _G[ACP_FRAME_NAME]
 
+    -- Make sure we are properly scaled.
+    self.frame:SetScale(UIParent:GetEffectiveScale());
+
     GameMenuButtonAddOns:SetText(L["AddOns"])
 
     for i=1,ACP_MAXADDONS do
