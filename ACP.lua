@@ -802,7 +802,7 @@ function ACP.SlashHandler(msg)
         ACP:ShowSlashCommands()
     end
 
-    ShowUIPanel(ACP_AddonList)
+    self:ToggleUI()
 end
 
 function ACP:ShowSlashCommands()
