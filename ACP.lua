@@ -457,6 +457,8 @@ function ACP:OnLoad(this)
     self.L = L
     self.frame = _G[ACP_FRAME_NAME]
 
+    self.frame:SetMovable()
+
     -- Make sure we are properly scaled.
     self.frame:SetScale(UIParent:GetEffectiveScale());
 
@@ -593,13 +595,20 @@ function ACP:OnLoad(this)
     this:RegisterEvent("VARIABLES_LOADED")
     this:RegisterEvent("ADDON_LOADED")
 
-    playerClass, _ = UnitClass("player")
+    this:RegisterForDrag("LeftButton");
 
+
+    playerClass, _ = UnitClass("player")
 
     SlashCmdList["ACP"] = self.SlashHandler
 
     SLASH_ACP1 = "/acp"
 end
+
+
+
+
+
 
 local eventLibrary, bugeventreged
 
