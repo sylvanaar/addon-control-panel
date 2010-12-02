@@ -1313,7 +1313,7 @@ function ACP:SaveSet(set)
     local name, enabled
     for i=1,GetNumAddOns() do
         name, _, _, enabled = GetAddOnInfo(i)
-        if enabled and name ~= ACP_ADDON_NAME then
+        if enabled and name ~= ACP_ADDON_NAME and not ACP:IsAddOnProtected(name) then
             table.insert(addonSet, name)
         end
     end
@@ -1377,7 +1377,7 @@ function ACP:LoadSet(set)
     local name
     for i=1,GetNumAddOns() do
         name = GetAddOnInfo(i)
-        if ACP:FindAddon(list, name) then
+        if ACP:FindAddon(list, name) and not ACP:IsAddOnProtected(name) then
             self:EnableAddon(name)
         end
     end
