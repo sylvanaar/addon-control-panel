@@ -783,7 +783,7 @@ function ACP.SlashHandler(msg)
         end
 
         if msg:find("^"..ACP_ADD_SET_D) then
-            set = msg:sub(ACP_ADD_SET_D:len(), -1):match("%d")
+            set = msg:sub(ACP_ADD_SET_D:len(), -1):match("%d+")
             set = tonumber(set)
 
             if type(set) == "number" then
@@ -793,7 +793,7 @@ function ACP.SlashHandler(msg)
         end
 
         if msg:find("^"..ACP_REM_SET_D) then
-            set = msg:sub(ACP_REM_SET_D:len(), -1):match("%d")
+            set = msg:sub(ACP_REM_SET_D:len(), -1):match("%d+")
             set = tonumber(set)
 
             if type(set) == "number" then
