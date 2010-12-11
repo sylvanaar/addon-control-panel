@@ -475,6 +475,7 @@ function ACP:OnLoad(this)
     _G[ACP_FRAME_NAME .. "_ReloadUI"]:SetText(L["ReloadUI"])
     _G[ACP_FRAME_NAME .. "BottomClose"]:SetText(L["Close"])
 
+
     UIPanelWindows[ACP_FRAME_NAME] = {
         area = "center",
         pushable = 0,
@@ -648,6 +649,7 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
 
         self:ToggleRecursion(not savedVar.NoRecurse)
         _G[ACP_FRAME_NAME .. "_NoRecurseText"]:SetText(L["Recursive"])
+        _G[ACP_FRAME_NAME .. "_NoRecurse"]:SetChecked(not savedVar.NoRecurse)
 
         this:RegisterEvent("PLAYER_ENTERING_WORLD")
         this:UnregisterEvent("VARIABLES_LOADED")

@@ -306,7 +306,11 @@
                 </Layers>
                 <Scripts>
                     <OnClick>
-                        ACP:ToggleRecursion(self:GetChecked());
+                        if (self:GetChecked()) then
+                            ACP:ToggleRecursion(true);
+                        else
+                            ACP:ToggleRecursion(false);
+                        end
                     </OnClick>
                 </Scripts>
                 <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
