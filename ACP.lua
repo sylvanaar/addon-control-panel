@@ -449,6 +449,9 @@ function ACP:ToggleRecursion(val)
 
     local frame = _G[ACP_FRAME_NAME .. "_NoRecurse"]
 
+
+    frame:SetChecked(not savedVar.NoRecurse)
+
 --    ACP:Print(L["Recursive Enable is now %s"]:format(CLR:Bool(not savedVar.NoRecurse, tostring(not savedVar.NoRecurse))))
 end
 
@@ -649,7 +652,7 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
 
         self:ToggleRecursion(not savedVar.NoRecurse)
         _G[ACP_FRAME_NAME .. "_NoRecurseText"]:SetText(L["Recursive"])
-        _G[ACP_FRAME_NAME .. "_NoRecurse"]:SetChecked(not savedVar.NoRecurse)
+
 
         this:RegisterEvent("PLAYER_ENTERING_WORLD")
         this:UnregisterEvent("VARIABLES_LOADED")
@@ -774,7 +777,7 @@ function ACP.SlashHandler(msg)
         end
 
         if msg == ACP_NORECURSE then
-            savedVar.NoRecurse = not savedVar.NoRecurse
+            ACP:ToggleRecursion()
             ACP:Print(L["Recursive Enable is now %s"]:format(CLR:Bool(not savedVar.NoRecurse, tostring(not savedVar.NoRecurse))))
             return
         end
