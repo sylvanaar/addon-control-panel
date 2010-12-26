@@ -1097,7 +1097,7 @@ addonListBuilders[GROUP_BY_NAME] = function()
 
         local acecategory = GetAddOnMetadata(addonIndex, "X-Category")
 
-        if acecategory == "Library" and not ACP:IsAddOnProtected(name) then
+        if (acecategory and acecategory:find("Library")) and not ACP:IsAddOnProtected(name) then
             table.insert(libs, addonIndex)
         else
             local category, content = strsplit("_", name)
