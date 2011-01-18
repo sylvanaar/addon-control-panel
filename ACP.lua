@@ -14,11 +14,15 @@ ACP.TAGS = {
     INTERFACE_MIN_ORG = "X-Since-Interface",
     INTERFACE_MAX = "X-Max-Interface",
     INTERFACE_MAX_ORG = "X-Compatible-With",
+	CHILD_OF = "X-Child-Of",
 }
 
 -- Handle various annoying special case names
 function ACP:SpecialCaseName(name)
     local partof = GetAddOnMetadata(name, ACP.TAGS.PART_OF)
+    if partof == nil then
+        partof = GetAddOnMetadata(name, ACP.TAGS.CHILD_OF)
+    end
 
     if partof ~= nil then
         return partof .. "_" .. name
