@@ -1,6 +1,4 @@
-﻿## Interface: 40000
-## X-Compatible-With: 40000
-## X-Since-Interface: 30300
+﻿## Interface: 40100
 
 ## Title: Addon Control Panel
 ## Author: Sylvanaar (Sylvaan - Zul'Jin/US-Horde)
