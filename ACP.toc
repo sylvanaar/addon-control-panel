@@ -1,4 +1,4 @@
-﻿## Interface: 40100
+﻿## Interface: 40200
 
 ## Title: Addon Control Panel
 ## Author: Sylvanaar (Sylvaan - Zul'Jin/US-Horde)
