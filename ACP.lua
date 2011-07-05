@@ -605,7 +605,7 @@ function ACP:OnLoad(this)
 
     this:RegisterForDrag("LeftButton");
 
-
+    local _
     playerClass, _ = UnitClass("player")
 
     SlashCmdList["ACP"] = self.SlashHandler
@@ -792,7 +792,7 @@ function ACP.SlashHandler(msg)
         end
 
         if msg:find("^"..ACP_ADD_SET_D) then
-            set = msg:sub(ACP_ADD_SET_D:len(), -1):match("%d+")
+            local set = msg:sub(ACP_ADD_SET_D:len(), -1):match("%d+")
             set = tonumber(set)
 
             if type(set) == "number" then
@@ -802,7 +802,7 @@ function ACP.SlashHandler(msg)
         end
 
         if msg:find("^"..ACP_REM_SET_D) then
-            set = msg:sub(ACP_REM_SET_D:len(), -1):match("%d+")
+            local set = msg:sub(ACP_REM_SET_D:len(), -1):match("%d+")
             set = tonumber(set)
 
             if type(set) == "number" then
@@ -1319,7 +1319,7 @@ function ACP:SaveSet(set)
 
     addonSet.name = setName
 
-    local name, enabled
+    local name, enabled, _
     for i=1,GetNumAddOns() do
         name, _, _, enabled = GetAddOnInfo(i)
         if enabled and name ~= ACP_ADDON_NAME and not ACP:IsAddOnProtected(name) then
@@ -1633,7 +1633,7 @@ function ACP:AddonList_OnShow(this)
 
     local obj
     local origNumAddons = GetNumAddOns()
-    numAddons = #sortedAddonList
+    local numAddons = #sortedAddonList
     FauxScrollFrame_Update(ACP_AddonList_ScrollFrame, numAddons, ACP_MAXADDONS, ACP_LINEHEIGHT, nil, nil, nil)
     local i
     local offset = FauxScrollFrame_GetOffset(ACP_AddonList_ScrollFrame)
