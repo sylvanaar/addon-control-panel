@@ -513,7 +513,8 @@ function ACP:OnLoad(this)
         timeout = 5,
         hideOnEscape = 1,
         exclusive = 1,
-        whileDead = 1
+        whileDead = 1,
+        preferredIndex = 3,
     }
 
     StaticPopupDialogs["ACP_RELOADUI_START"] = {
@@ -531,7 +532,8 @@ function ACP:OnLoad(this)
         timeout = 5,
         hideOnEscape = 1,
         exclusive = 1,
-        whileDead = 1
+        whileDead = 1,
+        preferredIndex = 3,
     }
 
     StaticPopupDialogs["ACP_SAVESET"] = {
@@ -546,6 +548,7 @@ function ACP:OnLoad(this)
         hideOnEscape = 1,
         whileDead = 1,
         exclusive = 1,
+        preferredIndex = 3,
     }
 
     local function OnRenameSet(this)
@@ -577,6 +580,7 @@ function ACP:OnLoad(this)
         exclusive = 1,
         whileDead = 1,
         hasEditBox = 1,
+        preferredIndex = 3,
     }
 
     for i,v in ipairs(ACP_BLIZZARD_ADDONS) do
