@@ -2042,22 +2042,20 @@ function ACP:ShowTooltip(this, index)
         GameTooltip:AddLine(depLine, 1, 1, 1, 1)
     end
 
-    local metaXEmbeds = GetAddOnMetadata(name, "X-Embeds")
-    if metaXEmbeds ~= nil then
-        local deps = {
-            strsplit(" ,", metaXEmbeds:trim())
-        }
-
-        local dep = deps[1]
-        if dep then
-            depLine = CLR:Label(L["Embeds"]) .. ": " .. CLR:AddonStatus(dep, dep)
-            for i=2,#deps do
-                dep = deps[i]
-                if dep and dep:len() > 0 then
-                    depLine = depLine .. ", " .. CLR:AddonStatus(dep, dep)
+    if GetAddOnOptionalDependencies then
+        local optionalDeps = { GetAddOnOptionalDependencies(name) }
+        if #optionalDeps > 0 then
+            local dep = optionalDeps[1]
+            if dep then
+                depLine = CLR:Label(L["Embeds"]) .. ": " .. CLR:AddonStatus(dep, dep)
+                for i=2,#optionalDeps do
+                    dep = optionalDeps[i]
+                    if dep and dep:len() > 0 then
+                        depLine = depLine .. ", " .. CLR:AddonStatus(dep, dep)
+                    end
                 end
+                GameTooltip:AddLine(depLine, 1, 0.78, 0, 1)
             end
-            GameTooltip:AddLine(depLine, 1, 0.78, 0, 1)
         end
     end
 
@@ -2143,11 +2141,12 @@ local function iterate_over(...)
     end
 end
 
-local function recursive_iterate_over(...)
+local function recursive_iterate_over(sink, ...)
     for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 then
-            ACP_EnableRecurse(x, true)
+            sink(x)
+
         end
     end
 end
@@ -2165,12 +2164,12 @@ local function enable_lod_dependants(addon)
         local isdep = find_iterate_over(addon_name, GetAddOnDependencies(name))
         local ondemand = IsAddOnLoadOnDemand(name)
 
-        if not isdep then
-            local metaXEmbeds = GetAddOnMetadata(name, "X-Embeds")
-            if metaXEmbeds then
-                isdep = find_iterate_over(addon_name, strsplit(" ,", metaXEmbeds:trim()))
-            end
-        end
+--        if not isdep then
+--            local metaXEmbeds = GetAddOnMetadata(name, "X-Embeds")
+--            if metaXEmbeds then
+--                isdep = find_iterate_over(addon_name, strsplit(" ,", metaXEmbeds:trim()))
+--            end
+--        end
 
         if isdep and not enabled and ondemand then
             ACP_EnableRecurse(name, true)
@@ -2178,6 +2177,10 @@ local function enable_lod_dependants(addon)
         end
     end
 end
+
+local function enableFunc(x) ACP_EnableRecurse(x, true) end
+
+local function enableIfLodFunc(x) if IsAddOnLoadOnDemand(x) then ACP_EnableRecurse(x, true) end end
 
 function ACP_EnableRecurse(name, skip_children)
     local _, _, _, enabled = GetAddOnInfo(name)
@@ -2195,11 +2198,9 @@ function ACP_EnableRecurse(name, skip_children)
             enable_lod_dependants(name)
         end
 
-        recursive_iterate_over(GetAddOnDependencies(name))
-
-        local metaXEmbeds = GetAddOnMetadata(name, "X-Embeds")
-        if metaXEmbeds then
-            recursive_iterate_over(strsplit(" ,", metaXEmbeds:trim()))
+        recursive_iterate_over(enableFunc, GetAddOnDependencies(name))
+        if GetAddOnOptionalDependencies then
+            recursive_iterate_over(enableIfLodFunc, GetAddOnOptionalDependencies(name))
         end
     else
     --    self:Print(L["Addon <%s> not valid"]:format(tostring(name)))

@@ -69,7 +69,7 @@ ACP:UpdateLocale( {
 	["Version"] = true;
 	["Status"] = true;
 	["Dependencies"] = true;
-	["Embeds"] = true;
+	["Embeds"] = "Optional Deps";
 } )
 --@enddebug@
 
