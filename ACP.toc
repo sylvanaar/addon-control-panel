@@ -21,6 +21,7 @@ localization-koKR.lua
 localization-deDE.lua
 localization-zhCN.lua
 localization-frFR.lua
+localization-itIT.lua
 localization-esES.lua
 localization-ruRU.lua
 ACP.xml
