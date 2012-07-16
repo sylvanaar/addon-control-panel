@@ -1624,7 +1624,7 @@ function ACP:AddonList_LoadNow(index)
     ACP:AddonList_OnShow()
 end
 
-function ACP:AddonList_OnShow(this)
+function ACP:AddonList_OnShow_Fast(this)
     local function setSecurity(obj, idx)
         local width, height, iconWidth = 64, 16, 16
         local increment = iconWidth / width
@@ -1632,8 +1632,6 @@ function ACP:AddonList_OnShow(this)
         local right = idx * increment
         obj:SetTexCoord(left, right, 0, 1)
     end
-
-    UpdateAddOnMemoryUsage()
 
     local obj
     local origNumAddons = GetNumAddOns()
@@ -1831,6 +1829,11 @@ function ACP:AddonList_OnShow(this)
         end
 
     end
+end
+
+function ACP:AddonList_OnShow(this)
+    UpdateAddOnMemoryUsage()
+    return self:AddonList_OnShow_Fast(this)
 end
 
 function ACP:SetButton_OnClick(this)
