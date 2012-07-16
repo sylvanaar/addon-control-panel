@@ -587,7 +587,7 @@
                 </Layers>
                 <Scripts>
                     <OnVerticalScroll>
-                        FauxScrollFrame_OnVerticalScroll(self, offset, ACP_LINEHEIGHT, function() ACP:AddonList_OnShow() end);
+                        FauxScrollFrame_OnVerticalScroll(self, offset, ACP_LINEHEIGHT, function() ACP:AddonList_OnShow_Fast() end);
                     </OnVerticalScroll>
                 </Scripts>
             </ScrollFrame>
