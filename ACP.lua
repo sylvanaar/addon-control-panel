@@ -495,7 +495,7 @@ function ACP:OnLoad(this)
         OnAccept = function()
             ReloadUI()
         end,
-        OnCancel = function(data, reason)
+        OnCancel = function(self, data, reason)
             if (reason == "timeout") then
                 ReloadUI()
             else
@@ -521,10 +521,10 @@ function ACP:OnLoad(this)
         text = L["ACP: Some protected addons aren't loaded. Reload now?"],
         button1 = TEXT(ACCEPT),
         button2 = TEXT(CANCEL),
-        OnAccept = function()
+        OnAccept = function(this)
             ReloadUI()
         end,
-        OnCancel = function(data, reason)
+        OnCancel = function(this, data, reason)
             if (reason == "timeout") then
                 ReloadUI()
             end
@@ -540,7 +540,7 @@ function ACP:OnLoad(this)
         text = L["Save the current addon list to [%s]?"],
         button1 = TEXT(YES),
         button2 = TEXT(CANCEL),
-        OnAccept = function()
+        OnAccept = function(this)
             self:SaveSet(self.savingSet)
             CloseDropDownMenus(1)
         end,
@@ -575,7 +575,7 @@ function ACP:OnLoad(this)
         EditBoxOnEscapePressed = function(this)
             this:GetParent():Hide()
         end,
-        timeout = 0,
+                                                timeout = 0,
         hideOnEscape = 1,
         exclusive = 1,
         whileDead = 1,
@@ -2209,3 +2209,4 @@ function ACP_EnableRecurse(name, skip_children)
     --    self:Print(L["Addon <%s> not valid"]:format(tostring(name)))
     end
 end
+vvvvv
