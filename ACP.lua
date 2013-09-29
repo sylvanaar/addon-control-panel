@@ -2209,4 +2209,3 @@ function ACP_EnableRecurse(name, skip_children)
     --    self:Print(L["Addon <%s> not valid"]:format(tostring(name)))
     end
 end
-vvvvv
