@@ -510,9 +510,7 @@ function ACP:OnLoad(this)
             ReloadUI()
         end,
         OnCancel = function(this, data, reason)
-            if (reason == "timeout") then
-                ReloadUI()
-            end
+            ACP_Data.reloadRequired = nil
         end,
         timeout = 10,
         hideOnEscape = 1,
@@ -560,7 +558,7 @@ function ACP:OnLoad(this)
         EditBoxOnEscapePressed = function(this)
             this:GetParent():Hide()
         end,
-                                                timeout = 0,
+        timeout = 0,
         hideOnEscape = 1,
         exclusive = 1,
         whileDead = 1,
