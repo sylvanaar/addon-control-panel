@@ -495,23 +495,7 @@ function ACP:OnLoad(this)
         OnAccept = function()
             ReloadUI()
         end,
-        OnCancel = function(self, data, reason)
---            ReloadUI() is a protected function now requiring the user to click something.
---            if (reason == "timeout") then
---                ReloadUI()
---            else
-                StaticPopupDialogs["ACP_RELOADUI"].reloadAccepted = false
---            end
-        end,
-        OnHide = function()
-            if (StaticPopupDialogs["ACP_RELOADUI"].reloadAccepted) then
-                ReloadUI();
-            end
-        end,
-        OnShow = function()
-            StaticPopupDialogs["ACP_RELOADUI"].reloadAccepted = true;
-        end,
-        timeout = 10,
+        timeout = 0,
         hideOnEscape = 1,
         exclusive = 1,
         whileDead = 1,
@@ -530,7 +514,7 @@ function ACP:OnLoad(this)
                 ReloadUI()
             end
         end,
-        timeout = 5,
+        timeout = 10,
         hideOnEscape = 1,
         exclusive = 1,
         whileDead = 1,
