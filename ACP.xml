@@ -311,6 +311,13 @@
                             ACP:ToggleRecursion(false);
                         end
                     </OnClick>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self,"ANCHOR_RIGHT");
+                        GameTooltip:SetText(ACP.L["Resurse-ToolTip"], nil, nil, nil, nil, 1);
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide();
+                    </OnLeave>
                 </Scripts>
                 <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
                 <PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
