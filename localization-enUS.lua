@@ -70,6 +70,7 @@ ACP:UpdateLocale( {
 	["Status"] = true;
 	["Dependencies"] = true;
 	["Embeds"] = "Optional Deps";
+    ["Resurse-ToolTip"] = "When enabling an addon, attempt to enable any addons the addon depends on";
 } )
 --@enddebug@
 
