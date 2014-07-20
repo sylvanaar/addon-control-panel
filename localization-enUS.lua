@@ -10,7 +10,7 @@ ACP:UpdateLocale( {
 	["Addons [%s] Loaded."] = true,
 	["Addons [%s] renamed to [%s]."] = true,
 	["Loaded on demand."] = true,
-	["AddOns"] = true,
+	["AddOns"] = "AddOns (ACP)",
 	["Load"] = true,
 	["Disable All"] = true,
 	["Enable All"] = true,
