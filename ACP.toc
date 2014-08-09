@@ -1,4 +1,4 @@
-﻿## Interface: 50400  
+﻿## Interface: 50400   
 
 ## Title: Addon Control Panel
 ## Author: Sylvanaar (Sylvaan - Zul'Jin/US-Horde)
