@@ -1,5 +1,6 @@
 <!-- edited with XMLSpy v2007 (http://www.altova.com) by jon (n/a) -->
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ W:\WORLDO~1\BLIZZA~1\FrameXML\UI.xsd">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ W:\WORLDO~1\BLIZZA~1\FrameXML\UI.xsd">
     <Button name="ACP_AddonListEntryTemplate" virtual="true">
         <Size>
             <AbsDimension x="520" y="16"/>
@@ -121,8 +122,8 @@
                         GameTooltip:Hide()
                     </OnLeave>
                     <OnClick>
-                        ACP:AddonList_Enable(self:GetParent().addon, self:GetChecked(), 
-                        IsShiftKeyDown(), IsControlKeyDown(), self:GetParent().category);
+                        ACP:AddonList_Enable(self:GetParent().addon, self:GetChecked(),
+                            IsShiftKeyDown(), IsControlKeyDown(), self:GetParent().category);
                     </OnClick>
                 </Scripts>
                 <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
@@ -141,39 +142,39 @@
             </OnLeave>
         </Scripts>
     </Button>
-    <Button name="GameMenuButtonAddOns" inherits="GameMenuButtonTemplate" text="AddOns" parent="GameMenuFrame">
-        <Anchors>
-            <Anchor point="TOP" relativeTo="GameMenuButtonMacros" relativePoint="BOTTOM">
-                <Offset>
-                    <AbsDimension x="0" y="-1"/>
-                </Offset>
-            </Anchor>
-        </Anchors>
-        <Scripts>
-            <OnLoad>
-	    if GameMenuFrame_UpdateVisibleButtons then
-	      hooksecurefunc("GameMenuFrame_UpdateVisibleButtons", function()
-	        GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()+25)
-	      end)
-	    end
-            </OnLoad>
-            <OnShow>
-            
-            local point, relativeTo, relativePoint, x, y= GameMenuButtonMacros:GetPoint(1);
-			if (relativeTo and relativeTo ~= self ) then
-				self:SetPoint( point, relativeTo, relativePoint, x, y)
-			end            
-                        
-            GameMenuButtonMacros:ClearAllPoints()
-            GameMenuButtonMacros:SetPoint("TOP",self,"BOTTOM",0,-1);
-        </OnShow>
-            <OnClick>
-            PlaySound("igMainMenuOption");
-            HideUIPanel(GameMenuFrame);
-            ShowUIPanel(ACP_AddonList);
-        </OnClick>
-        </Scripts>
-    </Button>
+    <!--<Button name="GameMenuButtonAddOns" inherits="GameMenuButtonTemplate" text="AddOns" parent="GameMenuFrame">-->
+        <!--<Anchors>-->
+            <!--<Anchor point="TOP" relativeTo="GameMenuButtonMacros" relativePoint="BOTTOM">-->
+                <!--<Offset>-->
+                    <!--<AbsDimension x="0" y="-1"/>-->
+                <!--</Offset>-->
+            <!--</Anchor>-->
+        <!--</Anchors>-->
+        <!--<Scripts>-->
+            <!--<OnLoad>-->
+                <!--if GameMenuFrame_UpdateVisibleButtons then-->
+                <!--hooksecurefunc("GameMenuFrame_UpdateVisibleButtons", function()-->
+                <!--GameMenuFrame:SetHeight(GameMenuFrame:GetHeight()+25)-->
+                <!--end)-->
+                <!--end-->
+            <!--</OnLoad>-->
+            <!--<OnShow>-->
+
+                <!--local point, relativeTo, relativePoint, x, y= GameMenuButtonMacros:GetPoint(1);-->
+                <!--if (relativeTo and relativeTo ~= self ) then-->
+                <!--self:SetPoint( point, relativeTo, relativePoint, x, y)-->
+                <!--end-->
+
+                <!--GameMenuButtonMacros:ClearAllPoints()-->
+                <!--GameMenuButtonMacros:SetPoint("TOP",self,"BOTTOM",0,-1);-->
+            <!--</OnShow>-->
+            <!--<OnClick>-->
+                <!--PlaySound("igMainMenuOption");-->
+                <!--HideUIPanel(GameMenuFrame);-->
+                <!--ShowUIPanel(ACP_AddonList);-->
+            <!--</OnClick>-->
+        <!--</Scripts>-->
+    <!--</Button>-->
     <Frame name="ACP_AddonList" hidden="true" toplevel="true" enableMouse="true" moveable="true" enableKeyboard="false">
         <Size>
             <AbsDimension x="640" y="512"/>
@@ -185,6 +186,45 @@
             <AbsInset left="0" right="44" top="0" bottom="13"/>
         </HitRectInsets>
         <Frames>
+            <CheckButton name="ACPAddonListForceLoad">
+                <Size>
+                    <AbsDimension x="32" y="32"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOP" x="85" y="-20"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString inherits="GameFontNormalSmall" text="ADDON_FORCE_LOAD">
+                            <Anchors>
+                                <Anchor point="LEFT" x="36" y="0"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnShow>
+                        if ( IsAddonVersionCheckEnabled() ) then
+                            self:SetChecked(false);
+                        else
+                            self:SetChecked(true);
+                        end
+                    </OnShow>
+                    <OnClick>
+                        if (self:GetChecked()) then
+                            SetAddonVersionCheck(0);
+                        else
+                            SetAddonVersionCheck(1);
+                        end
+                        ACP:ReloadAddonList()
+                    </OnClick>
+                </Scripts>
+                <NormalTexture file="Interface\Buttons\UI-CheckBox-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-CheckBox-Down"/>
+                <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD"/>
+                <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check"/>
+                <DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled"/>
+            </CheckButton>
             <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
                 <Anchors>
                     <Anchor point="TOPRIGHT">
@@ -196,16 +236,13 @@
             </Button>
             <Button name="$parentSortDropDown" inherits="UIDropDownMenuTemplate">
                 <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="280" y="-22"/>
-                        </Offset>
-                    </Anchor>
+                    <Anchor point="RIGHT" relativeTo="ACPAddonListForceLoad" relativePoint="LEFT" x="-120" y="0"/>
+
                 </Anchors>
                 <Scripts>
                     <OnShow>
-            ACP:SortDropDown_OnShow(self)
-          </OnShow>
+                        ACP:SortDropDown_OnShow(self)
+                    </OnShow>
                 </Scripts>
             </Button>
             <Button name="$parentDisableAll" inherits="UIPanelButtonTemplate" text="Disable All">
@@ -312,7 +349,7 @@
                         end
                     </OnClick>
                     <OnEnter>
-                        GameTooltip:SetOwner(self,"ANCHOR_RIGHT");
+                        GameTooltip:SetOwner(self, "ANCHOR_RIGHT");
                         GameTooltip:SetText(ACP.L["Resurse-ToolTip"], nil, nil, nil, nil, 1);
                     </OnEnter>
                     <OnLeave>
@@ -355,7 +392,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                            HideUIPanel(ACP_AddonList);
+                        HideUIPanel(ACP_AddonList);
                     </OnClick>
                 </Scripts>
             </Button>
@@ -691,9 +728,9 @@
             <OnShow>
                 ACP:AddonList_OnShow(self)
             </OnShow>
-        	<!--<OnKeyDown>-->
-				<!--ACP:OnKeyDown(self, key);-->
-			<!--</OnKeyDown>-->
+            <!--<OnKeyDown>-->
+            <!--ACP:OnKeyDown(self, key);-->
+            <!--</OnKeyDown>-->
             <OnDragStart>
                 self:StartMoving()
             </OnDragStart>

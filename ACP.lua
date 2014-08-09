@@ -469,8 +469,6 @@ function ACP:OnLoad(this)
     -- Make sure we are properly scaled.
     self.frame:SetScale(UIParent:GetEffectiveScale());
 
-    GameMenuButtonAddOns:SetText(L["AddOns"])
-
     for i=1,ACP_MAXADDONS do
         local button = _G[ACP_FRAME_NAME .. "Entry" .. i .. "LoadNow"]
         button:SetText(L["Load"])
@@ -683,6 +681,11 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
         this:UnregisterEvent("PLAYER_ENTERING_WORLD")
         this:RegisterEvent("PLAYER_ALIVE")
 
+        GameMenuButtonAddons:SetScript("OnClick", function()
+            PlaySound("igMainMenuOption");
+            HideUIPanel(GameMenuFrame);
+            ShowUIPanel(ACP_AddonList);
+        end)
 
     --        ACP:ProcessBugSack("session")
     elseif event == "ADDON_LOADED" then
