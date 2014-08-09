@@ -372,29 +372,52 @@ local ACP_DefaultSet = {}
 local ACP_DEFAULT_SET = 0
 local ACP_BLIZZARD_ADDONS = {
     "Blizzard_AchievementUI",
+    "Blizzard_ArchaeologyUI",
     "Blizzard_ArenaUI",
     "Blizzard_AuctionUI",
+    "Blizzard_AuthChallengeUI",
     "Blizzard_BarbershopUI",
     "Blizzard_BattlefieldMinimap",
     "Blizzard_BindingUI",
+    "Blizzard_BlackMarketUI",
     "Blizzard_Calendar",
+    "Blizzard_ChallengesUI",
+    "Blizzard_ClientSavedVariables",
     "Blizzard_CombatLog",
     "Blizzard_CombatText",
+    "Blizzard_CompactRaidFrames",
+    "Blizzard_CUFProfiles",
     "Blizzard_DebugTools",
+    "Blizzard_EncounterJournal",
+    "Blizzard_GarrisonUI",
     "Blizzard_GlyphUI",
     "Blizzard_GMChatUI",
     "Blizzard_GMSurveyUI",
     "Blizzard_GuildBankUI",
+    "Blizzard_GuildControlUI",
+    "Blizzard_GuildUI",
     "Blizzard_InspectUI",
+    "Blizzard_ItemAlterationUI",
     "Blizzard_ItemSocketingUI",
+    "Blizzard_ItemUpgradeUI",
+    "Blizzard_LookingForGuildUI",
     "Blizzard_MacroUI",
+    "Blizzard_MovePad",
+    "Blizzard_ObjectiveTracker",
+    "Blizzard_PetBattleUI",
+    "Blizzard_PetJournal",
+    "Blizzard_PVPUI",
+    "Blizzard_QuestChoice",
     "Blizzard_RaidUI",
+    "Blizzard_StoreUI",
     "Blizzard_TalentUI",
     "Blizzard_TimeManager",
     "Blizzard_TokenUI",
     "Blizzard_TradeSkillUI",
     "Blizzard_TrainerUI",
+    "Blizzard_VoidStorageUI",
 }
+
 local NUM_BLIZZARD_ADDONS = #ACP_BLIZZARD_ADDONS
 ACP.ACP_BLIZZARD_ADDONS = ACP_BLIZZARD_ADDONS
 local enabledList -- Used to prevent recursive loop in EnableAddon.
@@ -1792,18 +1815,20 @@ function ACP:AddonList_OnShow_Fast(this)
 
                 end
 
-                --[[
-                                if (reason) then
-                                    status:SetText(TEXT(_G["ADDON_"..reason)))
-                                elseif (loaded) then
-                                    status:SetText(L["Loaded"])
-                                elseif (ondemand) then
-                                    status:SetText(L["Loaded on demand."])
-                                else
-                                    status:SetText("")
-                                end
-                ]] if addonIdx <= origNumAddons then
+
+--                if (reason) then
+--                    status:SetText(TEXT(_G["ADDON_"..reason]))
+--                elseif (loaded) then
+--                    status:SetText(L["Loaded"])
+--                elseif (ondemand) then
+--                    status:SetText(L["Loaded on demand."])
+--                else
+--                    status:SetText("")
+--                end
+                if addonIdx <= origNumAddons then
                     status:SetText(CLR:Colorize(self:GetAddonStatus(addonIdx)))
+                else
+                    status:SetText("")
                 end
 
                 if (not loaded and enabled and ondemand) then
