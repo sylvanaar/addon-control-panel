@@ -2214,7 +2214,8 @@ function ACP_EnableRecurse(name, skip_children)
 
         recursive_iterate_over(enableFunc, GetAddOnDependencies(name))
         if GetAddOnOptionalDependencies then
-            recursive_iterate_over(enableIfLodFunc, GetAddOnOptionalDependencies(name))
+            recursive_iterate_over(enableFunc, GetAddOnOptionalDependencies(name))
+--            recursive_iterate_over(enableIfLodFunc, GetAddOnOptionalDependencies(name))
         end
     else
     --    self:Print(L["Addon <%s> not valid"]:format(tostring(name)))
