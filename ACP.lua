@@ -1722,10 +1722,10 @@ function ACP:AddonList_OnShow_Fast(this)
                     subCount = t and #t
                 end
 
-                local name, title, notes, enabled, loadable, reason, security
+                local  name, title, notes, url, loadable, reason, security, newVersion
                 if (addonIdx > origNumAddons) then
                     name = ACP_BLIZZARD_ADDONS[(addonIdx - origNumAddons)]
-                    name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(name)
+                    name, title, notes, url, loadable, reason, security, newVersion  = GetAddOnInfo(name)
                     --					obj.addon = name
                     --					title = L[name]
                     --					notes = ""
@@ -1738,7 +1738,7 @@ function ACP:AddonList_OnShow_Fast(this)
                     --					security = "SECURE"
                     obj.addon = name
                 else
-                    name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(addonIdx)
+                    name, title, notes, url, loadable, reason, security, newVersion  = GetAddOnInfo(addonIdx)
                     obj.addon = addonIdx
                 end
                 local loaded = IsAddOnLoaded(name)
@@ -2011,7 +2011,7 @@ function ACP:ShowTooltip(this, index)
         index = ACP_BLIZZARD_ADDONS[(index - GetNumAddOns())]
     end
 
-    local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(index)
+    local name, title, notes, url, loadable, reason, security, newVersion  = GetAddOnInfo(index)
     local author = GetAddOnMetadata(name, "Author")
     local version = ParseVersion(GetAddOnMetadata(name, "Version"))
     local deps = {
