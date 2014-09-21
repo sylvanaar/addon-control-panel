@@ -1694,7 +1694,7 @@ function ACP:AddonList_OnShow_Fast(this)
                 if collapsedAddons[obj.category] then
                     local t = self:GetAddonCategoryTable(obj.category)
                     subCount = t and #t
-                end
+                end 
 
                 local name, title, notes, enabled, loadable, reason, security
                 if (addonIdx > origNumAddons) then
