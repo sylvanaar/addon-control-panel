@@ -2175,7 +2175,7 @@ function ACP_EnableRecurse(name, skip_children)
 
     end
 
-    if (type(name) == "string" and strlen(name) > 0) or
+    if (type(name) == "string" and strlen(name) > 0) or 
         (type(name) == "number" and name > 0) then
 
         EnableAddOn(name)
