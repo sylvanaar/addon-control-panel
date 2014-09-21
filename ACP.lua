@@ -311,7 +311,7 @@ function ACP:GetAddonStatus(addon)
     end
 
 
-    local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(addon)
+    local name, title, notes, loadable, reason, security, newVersion = GetAddOnInfo(addon)
 
     if reason == "MISSING" and type(addon) == "string" then
         addon = self:ResolveLibraryName(addon) or addon
@@ -320,6 +320,7 @@ function ACP:GetAddonStatus(addon)
 
     local loaded = IsAddOnLoaded(addon)
     local isondemand = IsAddOnLoadOnDemand(addon)
+    local enabled = GetAddOnEnableState(mil, addon) > 0;
     local color, note
 
     if reason == "DISABLED" then color, note = "9d9d9d", getreason(reason) -- Grey
@@ -677,12 +678,12 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
 
         local reloadRequired = false
         for k,v in pairs(savedVar.ProtectedAddons) do
-            local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(k)
-
+            local name, title, notes, loadable, reason, security, newVersion    = GetAddOnInfo(k)
+            local enabled = GetAddOnEnableState(mil, name) > 0;
             if reason == 'MISSING' then
                 savedVar.ProtectedAddons[k] = nil
             elseif (not enabled) or enabled == 0 then
-                EnableAddOn(k)
+                EnableAddOn(k, nil)
                 reloadRequired = true
             end
 
@@ -1241,7 +1242,7 @@ function ACP:EnableAddon(addon, shift, ctrl)
     if ctrl then nochildren = not nochildren end
 
     if norecurse then
-        EnableAddOn(addon)
+        EnableAddOn(addon, nil)
     else
         local name = GetAddOnInfo(addon)
         ACP_EnableRecurse(name, nochildren)
@@ -1334,7 +1335,9 @@ function ACP:SaveSet(set)
 
     local name, enabled, _
     for i=1,GetNumAddOns() do
-        name, _, _, enabled = GetAddOnInfo(i)
+        name =  GetAddOnInfo(i)
+        enabled = GetAddOnEnableState(mil, name) > 0;
+
         if enabled and name ~= ACP_ADDON_NAME and not ACP:IsAddOnProtected(name) then
             table.insert(addonSet, name)
         end
@@ -1371,7 +1374,7 @@ function ACP:UnloadSet(set)
     for i=1,GetNumAddOns() do
         name = GetAddOnInfo(i)
         if name ~= ACP_ADDON_NAME and ACP:FindAddon(list, name) and not ACP:IsAddOnProtected(name) then
-            DisableAddOn(name)
+            DisableAddOn(name, nil)
         end
     end
 
@@ -1432,7 +1435,7 @@ function ACP:Security_OnClick(addon)
             savedVar.ProtectedAddons[addon] = true
         end
 
-        EnableAddOn(addon)
+        EnableAddOn(addon, nil)
     end
     self:AddonList_OnShow()
 end
@@ -1531,10 +1534,10 @@ end
 
 function ACP:DisableAllAddons()
     DisableAllAddOns()
-    EnableAddOn(ACP_ADDON_NAME)
+    EnableAddOn(ACP_ADDON_NAME, nil)
 
     for k in pairs(savedVar.ProtectedAddons) do
-        EnableAddOn(k)
+        EnableAddOn(k, nil)
     end
     ACP:Print("Disabled all addons (except ACP & protected)")
     
@@ -1610,7 +1613,7 @@ function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
             reclaim(enabledList)
             enabledList = nil
         else
-            DisableAddOn(addonIndex)
+            DisableAddOn(addonIndex, nil)
         end
 
         if category and collapsedAddons[category] then
@@ -1620,7 +1623,7 @@ function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
                 if enabled then
                     self:EnableAddon(v, shift, ctrl)
                 else
-                    DisableAddOn(v)
+                    DisableAddOn(v, nil)
                 end
             end
         end
@@ -1722,10 +1725,10 @@ function ACP:AddonList_OnShow_Fast(this)
                     subCount = t and #t
                 end
 
-                local  name, title, notes, url, loadable, reason, security, newVersion
+                local  name, title, notes, loadable, reason, security, newVersion
                 if (addonIdx > origNumAddons) then
                     name = ACP_BLIZZARD_ADDONS[(addonIdx - origNumAddons)]
-                    name, title, notes, url, loadable, reason, security, newVersion  = GetAddOnInfo(name)
+                    name, title, notes, loadable, reason, security, newVersion  = GetAddOnInfo(name)
                     --					obj.addon = name
                     --					title = L[name]
                     --					notes = ""
@@ -1738,9 +1741,10 @@ function ACP:AddonList_OnShow_Fast(this)
                     --					security = "SECURE"
                     obj.addon = name
                 else
-                    name, title, notes, url, loadable, reason, security, newVersion  = GetAddOnInfo(addonIdx)
+                    name, title, notes, loadable, reason, security, newVersion  = GetAddOnInfo(addonIdx)
                     obj.addon = addonIdx
                 end
+                local enabled = GetAddOnEnableState(mil, name) > 0;
                 local loaded = IsAddOnLoaded(name)
                 local ondemand = IsAddOnLoadOnDemand(name)
                 if (loadable) then
@@ -2011,7 +2015,7 @@ function ACP:ShowTooltip(this, index)
         index = ACP_BLIZZARD_ADDONS[(index - GetNumAddOns())]
     end
 
-    local name, title, notes, url, loadable, reason, security, newVersion  = GetAddOnInfo(index)
+    local name, title, notes, loadable, reason, security, newVersion  = GetAddOnInfo(index)
     local author = GetAddOnMetadata(name, "Author")
     local version = ParseVersion(GetAddOnMetadata(name, "Version"))
     local deps = {
@@ -2150,7 +2154,7 @@ local function iterate_over(...)
     for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 then
-            EnableAddOn(x)
+            EnableAddOn(x, nil)
         end
     end
 end
@@ -2197,7 +2201,7 @@ local function enableFunc(x) ACP_EnableRecurse(x, true) end
 local function enableIfLodFunc(x) if IsAddOnLoadOnDemand(x) then ACP_EnableRecurse(x, true) end end
 
 function ACP_EnableRecurse(name, skip_children)
-    local _, _, _, enabled = GetAddOnInfo(name)
+    local enabled = GetAddOnEnableState(mil, GetAddOnInfo(name)) > 0;
     if enabled then
         return
 
@@ -2206,7 +2210,7 @@ function ACP_EnableRecurse(name, skip_children)
     if (type(name) == "string" and strlen(name) > 0) or
         (type(name) == "number" and name > 0) then
 
-        EnableAddOn(name)
+        EnableAddOn(name, nil)
 
         if not skip_children then
             enable_lod_dependants(name)
