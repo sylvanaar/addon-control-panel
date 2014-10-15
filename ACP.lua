@@ -1723,7 +1723,7 @@ function ACP:AddonList_OnShow_Fast(this)
                 if collapsedAddons[obj.category] then
                     local t = self:GetAddonCategoryTable(obj.category)
                     subCount = t and #t
-                end
+                end 
 
                 local  name, title, notes, loadable, reason, security, newVersion
                 if (addonIdx > origNumAddons) then
@@ -2207,7 +2207,7 @@ function ACP_EnableRecurse(name, skip_children)
 
     end
 
-    if (type(name) == "string" and strlen(name) > 0) or
+    if (type(name) == "string" and strlen(name) > 0) or 
         (type(name) == "number" and name > 0) then
 
         EnableAddOn(name, nil)
