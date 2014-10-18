@@ -1606,7 +1606,6 @@ end
 
 
 function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
-    print(addonIndex, enabled, shift, ctrl, category)
     if (type(addonIndex) == "number") then
         if (enabled) then
             enabledList = acquire()
