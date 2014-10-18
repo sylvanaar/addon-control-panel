@@ -320,7 +320,7 @@ function ACP:GetAddonStatus(addon)
 
     local loaded = IsAddOnLoaded(addon)
     local isondemand = IsAddOnLoadOnDemand(addon)
-    local enabled = GetAddOnEnableState(nil, addon) > 0;
+    local enabled = GetAddOnEnableState(UnitName("player"), addon) > 0;
     local color, note
 
     if reason == "DISABLED" then color, note = "9d9d9d", getreason(reason) -- Grey
@@ -679,7 +679,7 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
         local reloadRequired = false
         for k,v in pairs(savedVar.ProtectedAddons) do
             local name, title, notes, loadable, reason, security, newVersion    = GetAddOnInfo(k)
-            local enabled = GetAddOnEnableState(mil, name) > 0;
+            local enabled = GetAddOnEnableState(UnitName("player"), name) > 0;
             if reason == 'MISSING' then
                 savedVar.ProtectedAddons[k] = nil
             elseif (not enabled) or enabled == 0 then
@@ -1336,7 +1336,7 @@ function ACP:SaveSet(set)
     local name, enabled, _
     for i=1,GetNumAddOns() do
         name =  GetAddOnInfo(i)
-        enabled = GetAddOnEnableState(mil, name) > 0;
+        enabled = GetAddOnEnableState(UnitName("player"), name) > 0;
 
         if enabled and name ~= ACP_ADDON_NAME and not ACP:IsAddOnProtected(name) then
             table.insert(addonSet, name)
@@ -1744,7 +1744,7 @@ function ACP:AddonList_OnShow_Fast(this)
                     name, title, notes, loadable, reason, security, newVersion  = GetAddOnInfo(addonIdx)
                     obj.addon = addonIdx
                 end
-                local enabled = GetAddOnEnableState(mil, name) > 0;
+                local enabled = GetAddOnEnableState(UnitName("player"), name) > 0;
                 local loaded = IsAddOnLoaded(name)
                 local ondemand = IsAddOnLoadOnDemand(name)
                 if (loadable) then
@@ -2201,7 +2201,7 @@ local function enableFunc(x) ACP_EnableRecurse(x, true) end
 local function enableIfLodFunc(x) if IsAddOnLoadOnDemand(x) then ACP_EnableRecurse(x, true) end end
 
 function ACP_EnableRecurse(name, skip_children)
-    local enabled = GetAddOnEnableState(mil, GetAddOnInfo(name)) > 0;
+    local enabled = GetAddOnEnableState(UnitName("player"), GetAddOnInfo(name)) > 0;
     if enabled then
         return
 
