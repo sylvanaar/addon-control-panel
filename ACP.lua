@@ -320,7 +320,7 @@ function ACP:GetAddonStatus(addon)
 
     local loaded = IsAddOnLoaded(addon)
     local isondemand = IsAddOnLoadOnDemand(addon)
-    local enabled = GetAddOnEnableState(mil, addon) > 0;
+    local enabled = GetAddOnEnableState(nil, addon) > 0;
     local color, note
 
     if reason == "DISABLED" then color, note = "9d9d9d", getreason(reason) -- Grey
@@ -1242,7 +1242,7 @@ function ACP:EnableAddon(addon, shift, ctrl)
     if ctrl then nochildren = not nochildren end
 
     if norecurse then
-        EnableAddOn(addon, nil)
+        EnableAddOn(addon, true)
     else
         local name = GetAddOnInfo(addon)
         ACP_EnableRecurse(name, nochildren)
@@ -1374,7 +1374,7 @@ function ACP:UnloadSet(set)
     for i=1,GetNumAddOns() do
         name = GetAddOnInfo(i)
         if name ~= ACP_ADDON_NAME and ACP:FindAddon(list, name) and not ACP:IsAddOnProtected(name) then
-            DisableAddOn(name, nil)
+            DisableAddOn(name, true)
         end
     end
 
@@ -1435,7 +1435,7 @@ function ACP:Security_OnClick(addon)
             savedVar.ProtectedAddons[addon] = true
         end
 
-        EnableAddOn(addon, nil)
+        EnableAddOn(addon, true)
     end
     self:AddonList_OnShow()
 end
@@ -1534,10 +1534,10 @@ end
 
 function ACP:DisableAllAddons()
     DisableAllAddOns()
-    EnableAddOn(ACP_ADDON_NAME, nil)
+    EnableAddOn(ACP_ADDON_NAME, true)
 
     for k in pairs(savedVar.ProtectedAddons) do
-        EnableAddOn(k, nil)
+        EnableAddOn(k, true)
     end
     ACP:Print("Disabled all addons (except ACP & protected)")
     
@@ -1606,6 +1606,7 @@ end
 
 
 function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
+    print(addonIndex, enabled, shift, ctrl, category)
     if (type(addonIndex) == "number") then
         if (enabled) then
             enabledList = acquire()
@@ -1613,7 +1614,7 @@ function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
             reclaim(enabledList)
             enabledList = nil
         else
-            DisableAddOn(addonIndex, nil)
+            DisableAddOn(addonIndex, true)
         end
 
         if category and collapsedAddons[category] then
@@ -1623,7 +1624,7 @@ function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
                 if enabled then
                     self:EnableAddon(v, shift, ctrl)
                 else
-                    DisableAddOn(v, nil)
+                    DisableAddOn(v, true)
                 end
             end
         end
@@ -2154,7 +2155,7 @@ local function iterate_over(...)
     for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 then
-            EnableAddOn(x, nil)
+            EnableAddOn(x, true)
         end
     end
 end
@@ -2210,7 +2211,7 @@ function ACP_EnableRecurse(name, skip_children)
     if (type(name) == "string" and strlen(name) > 0) or 
         (type(name) == "number" and name > 0) then
 
-        EnableAddOn(name, nil)
+        EnableAddOn(name, true)
 
         if not skip_children then
             enable_lod_dependants(name)
