@@ -683,7 +683,7 @@ function ACP:OnEvent(this, event, arg1, arg2, arg3)
             if reason == 'MISSING' then
                 savedVar.ProtectedAddons[k] = nil
             elseif (not enabled) or enabled == 0 then
-                EnableAddOn(k, nil)
+                EnableAddOn(k, UnitName("player"))
                 reloadRequired = true
             end
 
@@ -1242,7 +1242,7 @@ function ACP:EnableAddon(addon, shift, ctrl)
     if ctrl then nochildren = not nochildren end
 
     if norecurse then
-        EnableAddOn(addon, true)
+        EnableAddOn(addon, UnitName("player"))
     else
         local name = GetAddOnInfo(addon)
         ACP_EnableRecurse(name, nochildren)
@@ -1374,7 +1374,7 @@ function ACP:UnloadSet(set)
     for i=1,GetNumAddOns() do
         name = GetAddOnInfo(i)
         if name ~= ACP_ADDON_NAME and ACP:FindAddon(list, name) and not ACP:IsAddOnProtected(name) then
-            DisableAddOn(name, true)
+            DisableAddOn(name, UnitName("player"))
         end
     end
 
@@ -1435,7 +1435,7 @@ function ACP:Security_OnClick(addon)
             savedVar.ProtectedAddons[addon] = true
         end
 
-        EnableAddOn(addon, true)
+        EnableAddOn(addon, UnitName("player"))
     end
     self:AddonList_OnShow()
 end
@@ -1534,10 +1534,10 @@ end
 
 function ACP:DisableAllAddons()
     DisableAllAddOns()
-    EnableAddOn(ACP_ADDON_NAME, true)
+    EnableAddOn(ACP_ADDON_NAME, UnitName("player"))
 
     for k in pairs(savedVar.ProtectedAddons) do
-        EnableAddOn(k, true)
+        EnableAddOn(k, UnitName("player"))
     end
     ACP:Print("Disabled all addons (except ACP & protected)")
     
@@ -1613,7 +1613,7 @@ function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
             reclaim(enabledList)
             enabledList = nil
         else
-            DisableAddOn(addonIndex, true)
+            DisableAddOn(addonIndex, UnitName("player"))
         end
 
         if category and collapsedAddons[category] then
@@ -1623,7 +1623,7 @@ function ACP:AddonList_Enable(addonIndex, enabled, shift, ctrl, category)
                 if enabled then
                     self:EnableAddon(v, shift, ctrl)
                 else
-                    DisableAddOn(v, true)
+                    DisableAddOn(v, UnitName("player"))
                 end
             end
         end
@@ -2154,7 +2154,7 @@ local function iterate_over(...)
     for i=1,select("#", ...) do
         local x = select(i, ...)
         if x and x:len() > 0 then
-            EnableAddOn(x, true)
+            EnableAddOn(x, UnitName("player"))
         end
     end
 end
@@ -2170,7 +2170,7 @@ local function recursive_iterate_over(sink, ...)
 end
 
 local function enable_lod_dependants(addon)
-    local addon_name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(addon)
+    local addon_name, title, notes, loadable, reason, security, newVersion = GetAddOnInfo(addon)
 
     -- dont do this for FuBar, its annoying
     if addon_name == "FuBar" then
@@ -2178,7 +2178,8 @@ local function enable_lod_dependants(addon)
     end
 
     for i=1,GetNumAddOns() do
-        local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo(i)
+        local name, title, notes, loadable, reason, security, newVersion = GetAddOnInfo(i)
+        local enabled = GetAddOnEnableState(UnitName("player"), GetAddOnInfo(name)) > 0;
         local isdep = find_iterate_over(addon_name, GetAddOnDependencies(name))
         local ondemand = IsAddOnLoadOnDemand(name)
 
@@ -2210,7 +2211,7 @@ function ACP_EnableRecurse(name, skip_children)
     if (type(name) == "string" and strlen(name) > 0) or 
         (type(name) == "number" and name > 0) then
 
-        EnableAddOn(name, true)
+        EnableAddOn(name, UnitName("player"))
 
         if not skip_children then
             enable_lod_dependants(name)
