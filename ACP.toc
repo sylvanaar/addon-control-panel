@@ -1,4 +1,4 @@
-﻿## Interface: 60100 
+﻿## Interface: 60200 
 
 ## Title: Addon Control Panel
 ## Author: Sylvanaar (Sylvaan - Zul'Jin/US-Horde)
