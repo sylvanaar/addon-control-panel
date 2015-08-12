@@ -1533,7 +1533,7 @@ function ACP:SortDropDown_OnClick(sorter)
 end
 
 function ACP:DisableAllAddons()
-    DisableAllAddOns()
+    DisableAllAddOns(UnitName("player"))
     EnableAddOn(ACP_ADDON_NAME, UnitName("player"))
 
     for k in pairs(savedVar.ProtectedAddons) do
