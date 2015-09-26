@@ -24,4 +24,6 @@ localization-frFR.lua
 localization-itIT.lua
 localization-esES.lua
 localization-ruRU.lua
+localization-esMX.lua
+localization-ptBR.lua
 ACP.xml
