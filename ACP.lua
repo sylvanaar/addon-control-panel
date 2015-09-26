@@ -325,7 +325,7 @@ function ACP:GetAddonStatus(addon)
 
     if reason == "DISABLED" then color, note = "9d9d9d", getreason(reason) -- Grey
     elseif reason == "NOT_DEMAND_LOADED" then color, note = "0070dd", getreason(reason) -- Blue
-    elseif reason then color, note = "ff8000", getreason(reason) -- Orange
+    elseif reason and not loaded then color, note = "ff8000", getreason(reason) -- Orange
     elseif loadable and isondemand and not loaded and enabled then color, note = "1eff00", L["Loadable OnDemand"] -- Green
     elseif loaded and not enabled then color, note = "a335ee", L["Disabled on reloadUI"] -- Purple
     elseif reason == "MISSING" then color, note = "ff0000", getreason(reason)
@@ -1747,7 +1747,7 @@ function ACP:AddonList_OnShow_Fast(this)
                 local enabled = GetAddOnEnableState(UnitName("player"), name) > 0;
                 local loaded = IsAddOnLoaded(name)
                 local ondemand = IsAddOnLoadOnDemand(name)
-                if (loadable) then
+                if (loadable or loaded) then
                     titleText:SetTextColor(1, 0.78, 0)
                 elseif (enabled and reason ~= "DEP_DISABLED") then
                     titleText:SetTextColor(1, 0.1, 0.1)
