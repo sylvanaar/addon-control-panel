@@ -1,0 +1,4 @@
+syntax: glob
+.idea
+ACP.iml
+*.orig
