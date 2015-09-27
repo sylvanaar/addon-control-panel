@@ -1747,7 +1747,7 @@ function ACP:AddonList_OnShow_Fast(this)
                 local enabled = GetAddOnEnableState(UnitName("player"), name) > 0;
                 local loaded = IsAddOnLoaded(name)
                 local ondemand = IsAddOnLoadOnDemand(name)
-                if (loadable or loaded) then
+                if enabled and (loadable or loaded) then
                     titleText:SetTextColor(1, 0.78, 0)
                 elseif (enabled and reason ~= "DEP_DISABLED" and reason ~= "DEMAND_LOADED") then
                     titleText:SetTextColor(1, 0.1, 0.1)
