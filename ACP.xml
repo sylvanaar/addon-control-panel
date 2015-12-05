@@ -212,9 +212,9 @@
                     </OnShow>
                     <OnClick>
                         if (self:GetChecked()) then
-                            SetAddonVersionCheck(0);
+                            SetAddonVersionCheck(false);
                         else
-                            SetAddonVersionCheck(1);
+                            SetAddonVersionCheck(true);
                         end
                         ACP:ReloadAddonList()
                     </OnClick>
