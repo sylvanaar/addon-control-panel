@@ -491,7 +491,7 @@ function ACP:OnLoad(this)
     self.frame:SetMovable(true)
 
     -- Make sure we are properly scaled.
-    self.frame:SetScale(UIParent:GetEffectiveScale() * 0.75);
+    self.frame:SetScale(UIParent:GetEffectiveScale());
 
     for i=1,ACP_MAXADDONS do
         local button = _G[ACP_FRAME_NAME .. "Entry" .. i .. "LoadNow"]
