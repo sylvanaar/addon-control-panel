@@ -1,4 +1,4 @@
-﻿## Interface: 70000 
+﻿## Interface: 70100
 
 ## Title: Addon Control Panel
 ## Author: Sylvanaar (Sylvaan - Zul'Jin/US-Horde)
