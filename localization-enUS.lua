@@ -151,16 +151,3 @@ if (GetLocale() == "enUS") then
 	)
 end
 
---[====[
---[===[@non-debug@
-
-if (GetLocale() == "enUS") then
-	ACP:UpdateLocale(
-
---@localization(locale="enUS", format="lua_table", same-key-is-true=true)@
-
-    )
-end
-
---@end-non-debug@]===]
---]====]
