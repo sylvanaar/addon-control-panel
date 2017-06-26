@@ -5,7 +5,7 @@ if not ACP then return end
 if (GetLocale() == "zhCN") then
 	ACP:UpdateLocale(
 
-@localization(locale="zhCN", format="lua_table")@
+--@localization(locale="zhCN", format="lua_table")@
 
     )
 end

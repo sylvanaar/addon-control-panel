@@ -7,7 +7,7 @@ if not ACP then return end
 if (GetLocale() == "itIT") then
 	ACP:UpdateLocale(
 
-@localization(locale="itIT", format="lua_table")@
+--@localization(locale="itIT", format="lua_table")@
 
     )
 end

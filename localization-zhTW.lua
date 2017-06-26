@@ -5,7 +5,7 @@
 if (GetLocale() == "zhTW") then
 	ACP:UpdateLocale(
 
-@localization(locale="zhTW", format="lua_table")@
+--@localization(locale="zhTW", format="lua_table")@
 
     )
 end
