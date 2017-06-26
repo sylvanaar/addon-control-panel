@@ -5,7 +5,7 @@
 if (GetLocale() == "ptBR") then
 	ACP:UpdateLocale(
 
-@localization(locale="ptBR", format="lua_table")@
+--@localization(locale="ptBR", format="lua_table")@
 
     )
 end

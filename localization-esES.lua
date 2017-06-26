@@ -5,7 +5,7 @@ if not ACP then return end
 if (GetLocale() == "esES") then
 	ACP:UpdateLocale(
 
-@localization(locale="esES", format="lua_table")@
+--@localization(locale="esES", format="lua_table")@
 
     )
 end

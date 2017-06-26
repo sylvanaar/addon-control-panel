@@ -5,7 +5,7 @@
 if (GetLocale() == "ruRU") then
 	ACP:UpdateLocale(
 
-@localization(locale="ruRU", format="lua_table")@
+--@localization(locale="ruRU", format="lua_table")@
 
     )
 end

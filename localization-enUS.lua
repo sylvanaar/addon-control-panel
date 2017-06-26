@@ -79,7 +79,7 @@ ACP:UpdateLocale( {
 if (GetLocale() == "enUS") then
 	ACP:UpdateLocale(
 
-@localization(locale="enUS", format="lua_table")@
+--@localization(locale="enUS", format="lua_table")@
 
     )
 end

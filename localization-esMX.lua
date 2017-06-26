@@ -5,7 +5,7 @@
 if (GetLocale() == "esMX") then
 	ACP:UpdateLocale(
 
-@localization(locale="esMX", format="lua_table")@
+--@localization(locale="esMX", format="lua_table")@
 
     )
 end
