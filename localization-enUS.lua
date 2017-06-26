@@ -21,13 +21,13 @@ ACP:UpdateLocale( {
 	["Recursive"] = true,
 	["Loadable OnDemand"] = true,
 	["Disabled on reloadUI"] = true,
-	["Default"] = true;
-	["Set "] = true;
-	["Save"] = true;
-	["Load"] = true;
-	["Add to current selection"] = true;
-	["Remove from current selection"] = true;
-	["Rename"] = true;
+	["Default"] = true,
+	["Set "] = true,
+	["Save"] = true,
+	["Load"] = true,
+	["Add to current selection"] = true,
+	["Remove from current selection"] = true,
+	["Rename"] = true,
 	["Use SHIFT to override the current enabling of dependancies behaviour."] = true,
     ["Click to enable protect mode. Protected addons will not be disabled"] = true,
     ["when performing a reloadui."]=true,
@@ -59,18 +59,18 @@ ACP:UpdateLocale( {
 	["Blizzard_TrainerUI"] = "Blizzard: Trainer",
 	["Blizzard_VehicleUI"] = "Blizzard: Vehicle",
 
-	["*** Enabling <%s> %s your UI ***"] = true;
-	["*** Unknown Addon <%s> Required ***"] = true;
-	["LoD Child Enable is now %s"] = true;
-	["Recursive Enable is now %s"] = true;
+	["*** Enabling <%s> %s your UI ***"] = true,
+	["*** Unknown Addon <%s> Required ***"] = true,
+	["LoD Child Enable is now %s"] = true,
+	["Recursive Enable is now %s"] = true,
 	["Addon <%s> not valid"] = true,
-	["Reload"] = true;
-	["Author"] = true;
-	["Version"] = true;
-	["Status"] = true;
-	["Dependencies"] = true;
-	["Embeds"] = "Optional Deps";
-    ["Resurse-ToolTip"] = "When enabling an addon, attempt to enable any addons the addon depends on";
+	["Reload"] = true,
+	["Author"] = true,
+	["Version"] = true,
+	["Status"] = true,
+	["Dependencies"] = true,
+	["Embeds"] = "Optional Deps",
+    ["Resurse-ToolTip"] = "When enabling an addon, attempt to enable any addons the addon depends on",
 } )
 --@enddebug@
 
