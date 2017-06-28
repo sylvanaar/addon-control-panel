@@ -634,22 +634,6 @@
                     </OnVerticalScroll>
                 </Scripts>
             </ScrollFrame>
-            <Button name="$parentResizeBottomRight" file="Interface\HelpFrame\HelpFrame-BotRight">
-                <Size>
-                    <AbsDimension x="128" y="256"/>
-                </Size>
-                <Anchors>
-                    <Anchor point="BOTTOMRIGHT"/>
-                </Anchors>
-                <Scripts>
-                    <OnMouseDown>
-                        ACP.StartResizing(self, "BOTTOMRIGHT")
-                    </OnMouseDown>
-                    <OnMouseDown>
-                        ACP.StopResizing(self)
-                    </OnMouseDown>
-                </Scripts>
-            </Button>
         </Frames>
         <Layers>
             <Layer level="BACKGROUND">
@@ -701,7 +685,14 @@
                         </Anchor>
                     </Anchors>
                 </Texture>
-
+                <Texture file="Interface\HelpFrame\HelpFrame-BotRight">
+                    <Size>
+                        <AbsDimension x="128" y="256"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="BOTTOMRIGHT"/>
+                    </Anchors>
+                </Texture>
             </Layer>
             <Layer level="ARTWORK">
                 <Texture name="$parentHeader" file="Interface\DialogFrame\UI-DialogBox-Header">
