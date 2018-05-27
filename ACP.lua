@@ -504,8 +504,8 @@ function ACP:OnLoad(this)
     }
     StaticPopupDialogs["ACP_RELOADUI"] = {
         text = L["Reload your User Interface?"],
-        button1 = TEXT(ACCEPT),
-        button2 = TEXT(CANCEL),
+        button1 = ACCEPT,
+        button2 = CANCEL,
         OnAccept = function()
             ReloadUI()
         end,
@@ -518,8 +518,8 @@ function ACP:OnLoad(this)
 
     StaticPopupDialogs["ACP_RELOADUI_START"] = {
         text = L["ACP: Some protected addons aren't loaded. Reload now?"],
-        button1 = TEXT(ACCEPT),
-        button2 = TEXT(CANCEL),
+        button1 = ACCEPT,
+        button2 = CANCEL,
         OnAccept = function(this)
             ReloadUI()
         end,
@@ -535,8 +535,8 @@ function ACP:OnLoad(this)
 
     StaticPopupDialogs["ACP_SAVESET"] = {
         text = L["Save the current addon list to [%s]?"],
-        button1 = TEXT(YES),
-        button2 = TEXT(CANCEL),
+        button1 = YES,
+        button2 = CANCEL,
         OnAccept = function(this)
             self:SaveSet(self.savingSet)
             CloseDropDownMenus(1)
@@ -565,8 +565,8 @@ function ACP:OnLoad(this)
 
     StaticPopupDialogs["ACP_RENAMESET"] = {
         text = L["Enter the new name for [%s]:"],
-        button1 = TEXT(YES),
-        button2 = TEXT(CANCEL),
+        button1 = YES,
+        button2 = CANCEL,
         OnAccept = OnRenameSet,
         EditBoxOnEnterPressed = OnRenameSet,
         EditBoxOnEscapePressed = function(this)
