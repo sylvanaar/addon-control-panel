@@ -10,6 +10,10 @@
 ## Version: @project-version@ 
 ## SavedVariables: ACP_Data
 
+## X-Curse-Project-ID: 7529
+## X-WoWI-ID: 17869
+
+
 ## X-Credits: ACP based now on rMCP, which is MCP modified by Rophy, originally by Saien.
 
 ## X-Category: Interface Enhancements
