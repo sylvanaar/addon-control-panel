@@ -2,12 +2,10 @@
 
 --[===[@non-debug@
 
-if (GetLocale() == "ptBR") then
-	ACP:UpdateLocale(
-
 --@localization(locale="ptBR", format="lua_table")@
 
-    )
+if (GetLocale() == "ptBR") then
+	ACP:UpdateLocale(L)
 end
 
 --@end-non-debug@]===]

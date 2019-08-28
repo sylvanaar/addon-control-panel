@@ -2,12 +2,10 @@ if not ACP then return end
 
 --[===[@non-debug@
 
-if (GetLocale() == "zhCN") then
-	ACP:UpdateLocale(
-
 --@localization(locale="zhCN", format="lua_table")@
 
-    )
+if (GetLocale() == "zhCN") then
+	ACP:UpdateLocale(L)
 end
 
 --@end-non-debug@]===]

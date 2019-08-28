@@ -2,12 +2,10 @@
 
 --[===[@non-debug@
 
-if (GetLocale() == "koKR") then
-	ACP:UpdateLocale(
-
 --@localization(locale="koKR", format="lua_table")@
 
-    )
+if (GetLocale() == "koKR") then
+	ACP:UpdateLocale(L)
 end
 
 --@end-non-debug@]===]

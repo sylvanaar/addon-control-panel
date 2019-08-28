@@ -2,11 +2,9 @@ if not ACP then return end
 
 --[===[@non-debug@
 
-if (GetLocale() == "esES") then
-	ACP:UpdateLocale(
-
 --@localization(locale="esES", format="lua_table")@
 
-    )
+if (GetLocale() == "esES") then
+	ACP:UpdateLocale(L)
 end
 --@end-non-debug@]===]
