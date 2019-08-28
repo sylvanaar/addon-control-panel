@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/sylvanaar/addon-control-panel.svg?branch=master)
+[![Build Status](https://travis-ci.org/sylvanaar/addon-control-panel.svg?branch=master)](https://travis-ci.org/sylvanaar/addon-control-panel)
 
 
 # Addon Control Panel (ACP)
