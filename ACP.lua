@@ -38,6 +38,10 @@ function ACP:SpecialCaseName(name)
         return name:sub(2, -1)
     elseif name == "ShadowedUF_Options" then
         return "ShadowedUnitFrames_Options"
+    elseif name == "FB_TrackingFrame" then
+        return "FishingBuddy_TrackingFrame"
+    elseif name:match("WeakAuras") then
+        return name:gsub("WeakAuras(%w+)", "WeakAuras_%1")
     end
 
     return name
