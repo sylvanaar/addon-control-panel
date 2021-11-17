@@ -234,6 +234,70 @@
                     </Anchor>
                 </Anchors>
             </Button>
+            <EditBox name="$parent_EditBox" letters="80" autoFocus="false">
+                    <Size x="100" y="32" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="130" y="-22"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                    <Layers>
+                        <Layer level="BACKGROUND">
+                            <Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+                                <Size x="64" y="32" />
+                                <Anchors>
+                                    <Anchor point="LEFT" relativePoint="LEFT">
+                                        <Offset x="-14" y="0" />
+                                    </Anchor>
+                                </Anchors>
+                                <TexCoords left="0" right="0.2" top="0" bottom="1.0"/>
+                            </Texture>
+                            <Texture file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+                                <Size x="64" y="32" />
+                                <Anchors>
+                                    <Anchor point="RIGHT" relativePoint="RIGHT">
+                                        <Offset x="14" y="0" />
+                                    </Anchor>
+                                </Anchors>
+                                <TexCoords left="0.7" right="1.0" top="0" bottom="1.0"/>
+                            </Texture>
+                        </Layer>
+                        <Layer level="ARTWORK">
+                            <FontString name="$parentSearchText" inherits="GameFontHighlightSmall" text="Search">
+                                <Anchors>
+                                    <Anchor point="RIGHT" relativePoint="LEFT">
+                                        <Offset>
+                                            <AbsDimension x="-15" y="0"/>
+                                        </Offset>
+                                    </Anchor>
+                                </Anchors>
+                            </FontString>
+                        </Layer>
+                    </Layers>
+                    <Scripts>
+                        <OnTextChanged>
+                            local text = self:GetText();
+                            text, patternMatchedTimes = text:gsub("%[", "");
+                            
+                            if ( patternMatchedTimes > 0 ) then
+                                self:SetText(text);
+                            end
+                        
+                            ACP:SetFilter(self:GetText());
+                        </OnTextChanged>
+                        <OnEscapePressed>
+                            self:ClearFocus();
+                        </OnEscapePressed>
+                        <OnEnterPressed>
+                            self:ClearFocus();
+                        </OnEnterPressed>
+                        <OnLoad>
+                        </OnLoad>
+                    </Scripts>
+                    <FontString inherits="ChatFontNormal" />
+            </EditBox>
             <Button name="$parentSortDropDown" inherits="UIDropDownMenuTemplate">
                 <Anchors>
                     <Anchor point="RIGHT" relativeTo="ACPAddonListForceLoad" relativePoint="LEFT" x="-120" y="0"/>
@@ -727,6 +791,7 @@
             </OnEvent>
             <OnShow>
                 ACP:AddonList_OnShow(self)
+				ACP_AddonList_EditBox:SetFocus()
             </OnShow>
             <!--<OnKeyDown>-->
             <!--ACP:OnKeyDown(self, key);-->
