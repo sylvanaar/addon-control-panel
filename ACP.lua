@@ -1553,6 +1553,57 @@ function ACP:AddonList_LoadNow(index)
     ACP:AddonList_OnShow()
 end
 
+function ACP:ShouldDisplayAddon(name, filter)
+	if filter == nil then
+		return true
+	end
+	
+	local result = name:upper():find(filter:upper())
+	return result ~= nil
+end
+
+local function FilterAddonList(addonList, filter)
+	local result = {}
+	local origNumAddons = GetNumAddOns()
+	
+	for i = 1, #addonList do
+		local addon = addonList[i]
+		local index
+		
+		if type(addon) == 'number' then
+			index = addon
+		else
+			index = GetAddonIndex(addon, true)
+		end
+		
+		if index ~= nil then
+			local addonName
+			
+			if index > origNumAddons then
+				addonName = ACP_BLIZZARD_ADDONS[(index - origNumAddons)]
+			else
+				local index = GetAddonIndex(index, true)
+				addonName = GetAddOnInfo(index)
+			end
+			
+			if ACP:ShouldDisplayAddon(addonName, filter) then
+				table.insert(result, addon);
+			end
+		end
+	end
+	
+	return result
+end
+
+function ACP:SetFilter(filter)
+	if filter == "" then
+		filter = nil
+	end
+
+	ACP.filter = filter
+	ACP:AddonList_OnShow();
+end
+
 function ACP:AddonList_OnShow_Fast(this)
     local function setSecurity(obj, idx)
         local width, height, iconWidth = 64, 16, 16
@@ -1561,7 +1612,12 @@ function ACP:AddonList_OnShow_Fast(this)
         local right = idx * increment
         obj:SetTexCoord(left, right, 0, 1)
     end
-
+	
+	local sortedAddonList = sortedAddonList
+	if ACP.filter ~= nil then
+		sortedAddonList = FilterAddonList(sortedAddonList, ACP.filter)
+	end
+	
     local obj
     local origNumAddons = GetNumAddOns()
     local numAddons = #sortedAddonList
@@ -1690,7 +1746,7 @@ function ACP:AddonList_OnShow_Fast(this)
                 end
 
                 --			    checkbox:ClearAllPoints()
-                if curr_category == "" then
+                if curr_category == "" or ACP.filter ~= nil then
                     checkbox:SetPoint("LEFT", 5, 0)
                     if collapse:IsShown() then
                         checkbox:SetWidth(32)
